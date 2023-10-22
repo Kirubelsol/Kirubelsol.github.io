@@ -1,0 +1,474 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="assets/css/customstyle.css">
+
+	<title>Filters Characterization</title>
+
+</head>
+
+
+<body>
+
+	<!-- Main navigation -->
+	<nav class = "navbar navbar-expand-md py-4 navbar-light navs "> 
+		<div class = "container-xl ">
+			<a class="navbar-brand" href="#">
+				<span class="text-white "><i class="bi bi-cpu-fill"></i>
+					Filters Design
+				</span>
+			  </a>
+
+			  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-list" aria-controls="nav-list" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			  </button>
+
+			  <div class="collapse navbar-collapse justify-content-end align-center" id="nav-list">
+				<ul class="navbar-nav ">
+				  <li class="nav-item">
+					<a class="nav-link text-white" href="index.html">Home</a>
+				  </li>
+				  <li class="nav-item" >
+					<a class="nav-link text-white " href="concepts.html">Concepts</a>
+				  </li>
+				  <li class="nav-item">
+					<a class="nav-link text-white" href="#contactForm">Contact</a>
+				  </li>
+	
+				</ul>
+			  </div>
+	 
+		</div>
+
+	</nav>
+
+  <section id="intro">
+      <div class="container-lg my-5">
+        <div class = " text-center slogan mb-2">
+            Filters Design: Details about the filters
+        </div>
+
+        <div class="row  justify-content-center serif">
+            <p class=" my-2 ">Filters are circuit components that are significantly used in signal processing, electronics, and more fields.
+              They are usually made of passive electrical components such as resistors and capacitors, or the passive components and an operational amplifier. These filters can pass or attenuate specific frequencies. Considering this, they can be used to refine signals such as in communcation system, reduce noise, and remove or enhance certain frequency ranges. As stated, there are two main types: Passive and Active filters.
+            </p>  
+        </div>
+
+        <div class = " text-center slogan mb-2">
+          Passive Filter
+        </div>
+
+
+        <div class="row  justify-content-center">
+          <div class=" text-center text-md-start serif">
+            <p class="my-2 "> Passive filters are electronic circuits that use passive circuit componenets which don't generate power ,such as capacitors, resisitors, and inductors, to alter the magnitude and phase of the input signals to the circuit. This includes attenuating or permmiting specific frequency ranges of the input signals. The passive filters include low-pass, high-pass, band-pass, and band-stop filters.  Some basic properties of passive filters include:  </p>
+
+            <div class="row  justify-content-center align-items-center mb-4">
+                <div class="col-md-6 text-center text-md-start">  
+                    <ul class = "text-start" style="padding-left: 50px;">
+                        <li>Uses passive componenets like resistors</li>
+                        <li> Don't introduce energy gain or signal amplification</li>
+                        <li> Don't require external power for operation </li>
+                        <li> Simpler in design and cheaper compared to active filters</li>
+                        <li> Limited in precision and ability to compensate for signal loss compared to active filters</li>
+                        <li>Used for basic frequency response shaping</li>		  
+                    </ul>
+                </div>
+                <div class="col-md-5 text-center d-none d-md-block">
+                    <img src="images/passiveRC.PNG" class="img-fluid" alt="ebook">
+                    <p class="subtitles">Passive RC low pass filter</p>
+                </div>
+            </div>
+              
+
+          </div>
+        </div>
+
+        <div class = " text-center slogan mb-2">
+          Active Filter
+        </div>
+
+
+        <div class="row  justify-content-center">
+          <div class=" text-center text-md-start serif">
+            <p class="my-2 "> Passive filters are electronic circuits that use active components ,such as operational amplifiers, to alter the magnitude and phase of the input signals to the circuit. This includes attenuating or permmiting specific frequency ranges and amplifying the input signals. The active filters also include low-pass, high-pass, band-pass, and band-stop filters.  Some basic properties of active filters include:  </p>
+
+            <div class="row  justify-content-center align-items-center mb-4">
+                <div class="col-md-6 text-center text-md-start">  
+                    <ul class = "text-start" style="padding-left: 50px;">
+                        <li>In addition to passive components, it uses active components like operational amplifiers</li>
+                        <li> Allow for signal amplification and energy gain</li>
+                        <li> Have external power requirements </li>
+                        <li> Complex in design and more expensive than passive filters</li>
+                        <li> High in precision and ability to compensate for signal loss compared to passive filters</li>
+                        <li> Used in advanced filtering tasks</li>	
+                        <li> Offers better control over properties like frequency response and gain</li>		  
+                    </ul>
+                </div>
+                <div class="col-md-5 text-center d-none d-md-block">
+                    <img src="images/filter.webp" class="img-fluid" alt="ebook">
+                    <p class="subtitles">Active RC low pass filter</p>
+                </div>
+            </div>
+              
+          </div>
+        </div>
+
+        <div class = " text-center slogan mb-2">
+          The four common filters
+        </div>
+
+        <div class = "serif mb-4">
+          <p ><b>Low-pass filter:</b> passes signals that are lower than the desired cutoff frequency while attenuating the signals afterwards. It is usually used to element high frequency noise.</p>
+          <p ><b>High-pass filter:</b> attenuates signals that are lower than the desired cutoff frequency while passing the signals afterwards. It is usually used to remove low frequency noise. </p>
+          <p ><b>Band-pass filter:</b> passes signals within the desired frequency range while attenuating signals that are not in the range. It is used to isolate a desired range of frequencies.</p>
+          <p ><b>Band-stop filter:</b> rejects signal within a certain frequency range while passing signals that are not in the range. It is used to avoid unwanted frequencies in signals.</p>
+        </div>
+
+        <div class = " text-center slogan mb-2">
+          Common concepts and parameters used in explaining the filters
+        </div>
+
+        <p class ="bodyfont">Operational amplifiers (Op-amps)</p>
+
+        <p class ="serif"> Operational amplifiers are electronic components used in analog circuit design for amplifying small input voltage differences across its differential inputs and allows for several signal processing applications. Their main properties are: </p>
+
+        <div class=" serif row  justify-content-center align-items-center mb-4">
+          <div class="col-md-6 text-center text-md-start">  
+              <ul class = "text-start" style="padding-left: 50px;">
+                  <li> Differential inputs, which are the negative and positive terminals, to amplify the small voltage differences between them</li>
+                  <li> Besides the two differential input, it has output terminal and two other terminals for DC power supply to operate the op-amp</li>
+                  <li> Low output impedance to avoid significant voltage drop </li>
+                  <li>High input impedance since in ideal case an op-amp shouldn't draw current from inputs.</li>
+                  <li> Virtual short circuit meaning insignifcant voltage difference and ideally no current flow between the two input terminals due to high open-loop gain. For further calculation, we will assume virtual short across the terminals.</li>		  
+              </ul>
+          </div>
+          <div class="col-md-5 text-center d-none d-md-block">
+              <img src="images/opamp.PNG" class="img-fluid rounded" alt="ebook">
+              <p class="subtitles">Operational amplifier</p>
+          </div>
+        </div>
+
+        <p class ="bodyfont">Impedance</p>
+
+        <p class ="serif"> Impedance is the opposition of alternating current flow through an AC circuit. It includes resistance, representing opposition of current in resistive manner, and reactance, representing the phase shift between voltage and current due to reactive components like capacitors and inductors. </p>
+
+        <div class=" serif justify-content-center align-items-center mb-4">
+          
+          <ul class = "text-start" style="padding-left: 100px;">
+              <li> Impedance of a resistor \( (Z_R) \): purely resistive and is equal to the resistance. \( Z_R = R \) </li>
+              <li> Impedance of a capacitor \( (Z_C) \): reactive and inversely related to frequency. \( Z_C = {1 \over {(2\pi fC)}} \) </li>
+              <li> Impedance of an inductor \( (Z_L) \): reactive and directly related to frequency. \( Z_L = 2\pi fL \) </li>
+          </ul>
+    
+        </div>
+
+        <p class ="bodyfont">Kirchhoff's laws and Voltage division</p>
+
+
+        <div class="row  justify-content-center align-items-center mb-4 ">
+          <div class="col-md-6 text-center text-md-start serif">  
+              <ul class = "text-start" style="padding-left: 50px;">
+                  <li>Kirchhoff's current law: states that the sum of current entering a junction is equal to the sum of current leaving the junction. In the figure to right, at the top, the current through \( R_1 \) is equal to the sum of current through \( R_2 \) and \( R_3 \). <br> \( i_1 = i_2 + i_3 \)   </li>
+                  <li> Kirchhoff's voltage law: states that the sum of voltage across a closed loop is zero. In the bottom figure. \( V_i = V_C + V_R \) where \( V_C \) and \( V_R \) are the voltage across the capacitor and resistor respectively. </li>
+                  <li>Voltage division: states that in series connection of components like resistors, the voltage drop across a component is proportiional to its impedance over the total circuit impedance. Kirchhoff's laws can be used to prove this. For instance, in the circuit to right: <br> \( i_R = i_C = i\) &nbsp; &nbsp; &nbsp; \( V_R = iR \) &nbsp; &nbsp; &nbsp; \( V_C = iZ_c \) &nbsp; &nbsp; &nbsp;  \( V_i = i(R + Z_c) \) &nbsp; &nbsp; &nbsp; \( i = {V_i \over {R+Z_c}} \) <br>
+                  \( V_R = iR = V_i({R \over {R+Z_c}}) \) <br> Hence the voltage across the resistor is proportional to the resistance over the total circuit impedance. </li>
+              </ul>
+          </div>
+          <div class="col-md-5 text-center d-none d-md-block">
+              <img src="images/KCL.PNG" class="img-fluid rounded" alt="ebook">
+              <p class="subtitles">KCL and Voltage Division Demo</p>
+          </div>
+
+          <div class = " text-center slogan mb-2">
+            Common parameters that are computed for 
+          </div>
+
+          <div class = "serif mb-4">
+            <p > <span class ="fst-italic">Cutoff frequency</span>: The cutoff frequency is the frequency at which the magnitude of \( Vout \over Vin \) is often defined to be below \( {-3dB =} {1 \over \sqrt{2}} \). In band-pass filter we have upper and lower cutoff frequencies. Cutoff frequency serves as the boundary between the frequencies that the filter allows to pass and attenuate. For instance in high-pass filter, below the cutoff frequency the magnitude of the signal starts to be signficantly attenuated. </p>
+            <p > <span class ="fst-italic">Transfer function</span>: a mathematical expression describing how the filter alters the magnitude and phase of the input signal helping us understand how the filter process the signals. The transfer function is used to come up with a bode plot to visualize the magnitude and phase change across frequencies. </p>
+            <p > <span class ="fst-italic">Gain</span>: indicates the amplification or attenuation factor applied to the input signal due to the filter at different frequencies.</p>
+            <p > <span class ="fst-italic">Phase shift</span>: refers to the phase difference introduced to the input signal due to the filter which indicates the shift in timing between the input and output signal measured in radians or degrees. signal within a certain frequency range while passing signals that are not in the range. It is used to avoid unwanted frequencies in signals.</p>
+            <p >  <span class ="fst-italic">Quality factor</span>:  a dimensionless parameter commonly used in band-pass and band-stop filters indicating the performance of the filter. It is the ratio of the center frequency to the bandwidth of the filter. Center frequency is the arithmentic mean of the upper and lower cutoff frequency or the geometric mean which is the square root of the cutoff frequencies product. Bandwidth refers to the range of frequencies that passes through in bandpass filter or that is attenuated in bandstop filters.  A higher quality factor value indicates narrow pass band of frequencies making it highly selective while lower value indicates wider bandwidth region. A higher Q value filter can be used in precise frequency selection application while a lower value filter can be used broader frequency coverage.</p>
+          </div>
+      </div>
+
+
+
+    </div>
+
+  </section>
+
+
+  <!-- Filters Characterization -->
+	<section id = "analysis" class="container-lg my-4">
+		<div class="accordion bodyfont" id="accordionFilter">
+			<div class="accordion-item">
+				<h2 class="accordion-header">
+					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#passives" aria-expanded="false" aria-controls="passives">
+					Passive Filter
+					</button>
+				</h2>
+        
+				<div id="passives" class="accordion-collapse collapse" data-bs-parent="#accordionFilter">
+					<div class="accordion-body">
+
+						<!--First order low pass RC-->
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#firstLowRC" aria-expanded="false" aria-controls="firstLowRC">
+								Low pass RC filter
+								</button>
+							</h2>
+							<div id="firstLowRC" class="accordion-collapse collapse" data-bs-parent="#passives">
+								<div class="accordion-body">
+									<div class="text-center d-none d-xl-block mb-3">
+										<span data-bs-placement="bottom" title="RC Low Pass Filter Schematic">
+										  <img src="images/RClowpass.PNG" class = "rounded" style="width: 60%; height: auto; vertical-align: middle;" alt="RC Low Pass Filter">
+										</span>
+										<p class="subtitles">RC low pass filter schematic</p>
+									</div>
+									 
+                  <div class=" js-RCLPF"></div>
+								</div>		
+							</div>
+						</div>
+						
+						<!--First order low pass RL-->
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#firstLowRL" aria-expanded="false" aria-controls="firstLowRL">
+								Low pass RL filter
+								</button>
+							</h2>
+							<div id="firstLowRL" class="accordion-collapse collapse" data-bs-parent="#passives">
+								<div class="accordion-body">
+									<div class="text-center d-none d-xl-block mb-3">
+										<span class="tt" data-bs-placement="bottom" title="RL Low Pass Filter Schematic">
+										  <img src="images/RLlowpass.PNG" class = "rounded"  style="width: 60%; height: auto; vertical-align: middle;" alt="RL Low Pass Filter">
+										</span>
+										<p class="subtitles">RL low pass filter schematic</p>
+									</div>
+                  
+                  <div class=" js-RLLPF"></div>  
+								</div>
+							</div>
+						</div>
+
+						
+						<!--High pass RC-->
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#firsthighRC" aria-expanded="false" aria-controls="firsthighRC">
+								High Pass RC Filter
+								</button>
+							</h2>
+							<div id="firsthighRC" class="accordion-collapse collapse" data-bs-parent="#passives">
+								<div class="accordion-body">
+									<div class="text-center d-none d-xl-block mb-3">
+										<span class="tt" data-bs-placement="bottom" title="RC High Pass Filter Schematic">
+										  <img src="images/RChighpass.PNG" class = "rounded"  style="width: 60%; height: auto; vertical-align: middle;" alt="RC High Pass Filter">
+										</span>
+										<p class="subtitles">RC high pass filter schematic</p>
+									</div>
+
+                  <div class=" js-RCHPF"></div>
+								</div>
+							</div>
+						</div>
+
+						<!--High pass RL-->
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#highRL" aria-expanded="false" aria-controls="highRL">
+								High Pass RL filter
+								</button>
+							</h2>
+							<div id="highRL" class="accordion-collapse collapse" data-bs-parent="#passives">
+								<div class="accordion-body">
+									<div class="text-center d-none d-xl-block mb-3">
+										<span class="tt" data-bs-placement="bottom" title="RL High Pass Filter Schematic">
+										  <img src="images/RLhighpass.PNG" class = "rounded"  style="width: 60%; height: auto; vertical-align: middle;" alt="RL High Pass Filter">
+										</span>
+										<p class="subtitles">RL high pass filter schematic</p>
+									</div>
+                  
+                  <div class=" js-RLHPF"></div>
+									
+								</div>
+							</div>
+						</div>
+
+						
+
+						<!--Band-pass RLC-->
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bandRLC" aria-expanded="false" aria-controls="bandRLC">
+								Band-pass RLC filter
+								</button>
+							</h2>
+							<div id="bandRLC" class="accordion-collapse collapse" data-bs-parent="#passives">
+								<div class="accordion-body">
+									<div class="text-center d-none d-xl-block mb-3">
+										<span class="tt" data-bs-placement="bottom" title="RLC Band Pass Filter Schematic">
+										  <img src="images/RLCbandpass.PNG" class = "rounded"  style="width: 60%; height: auto; vertical-align: middle;" alt="RLC Band Pass Filter">
+										</span>
+										<p class="subtitles">RLC band-pass filter schematic</p>
+									</div>
+
+                  <div class=" js-BPF"></div>
+								</div>
+							</div>
+						</div>
+
+						<!--Band-stop RLC-->
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#notchRLC" aria-expanded="false" aria-controls="notchRLC">
+								Band-stop RLC filter
+								</button>
+							</h2>
+							<div id="notchRLC" class="accordion-collapse collapse" data-bs-parent="#passives">
+								<div class="accordion-body">
+									<div class="text-center d-none d-xl-block mb-3">
+										<span class="tt" data-bs-placement="bottom" title="RLC Notch Filter Schematic">
+										  <img src="images/RLCbandstop.PNG" class = "rounded"  style="width: 60%; height: auto; vertical-align: middle;" alt="RLC Notch Filter">
+										</span>
+										<p class="subtitles">RLC band-stop filter schematic</p>
+									</div>
+                  
+                  <div class=" js-BSF"></div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="accordion-item">
+			<h2 class="accordion-header">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#actives" aria-expanded="false" aria-controls="actives">
+				Active Filter
+				</button>
+			</h2>
+			<div id="actives" class="accordion-collapse collapse" data-bs-parent="#accordionFilter">
+				<div class="accordion-body">
+
+					<!--First order low pass RRC-->
+					<div class="accordion-item">
+						<h2 class="accordion-header">
+							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#firstLowRRC" aria-expanded="false" aria-controls="firstLowRC">
+							First Order Low Pass filter (R<sub class="fst-italic">i</sub>, R<sub class="fst-italic">f</sub>, C)
+							</button>
+						</h2>
+						<div id="firstLowRRC" class="accordion-collapse collapse" data-bs-parent="#actives">
+							<div class="accordion-body">
+								<div class="text-center d-none d-xl-block mb-3">
+									<span data-bs-placement="bottom" title="Active RC Low Pass Filter Schematic">
+										<img src="images/ActiveRLCLowPass.PNG" class = "rounded"  style="width: 60%; height: auto; vertical-align: middle;" alt="Active Low Pass Filter">
+									</span>
+									<p class="subtitles">Active RC low pass filter schematic</p>
+								</div>
+									
+                <div class=" js-RRCLPF"></div>  
+							</div>		
+						</div>
+					</div>
+
+					<!--First order high pass RCC-->
+					<div class="accordion-item">
+						<h2 class="accordion-header">
+							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#firstHighRCC" aria-expanded="false" aria-controls="firstHighRCC">
+							First Order Low Pass filter (C<sub class="fst-italic">i</sub>, C<sub class="fst-italic">f</sub>, R)
+							</button>
+						</h2>
+						<div id="firstHighRCC" class="accordion-collapse collapse" data-bs-parent="#actives">
+							<div class="accordion-body">
+								<div class="text-center d-none d-xl-block mb-3">
+									<span data-bs-placement="bottom" title="Active RC Low Pass Filter Schematic">
+										<img src="images/ActiveRLCHighPass.PNG" class = "rounded"  style="width: 60%; height: auto; vertical-align: middle;" alt="Active High Pass Filter">
+									</span>
+									<p class="subtitles">Active RC High pass filter schematic</p>
+								</div>
+
+                <div class=" js-RCCHPF"></div>  
+							</div>		
+						</div>
+					</div>
+			</div>
+			</div>
+		</div>   
+	</section>
+
+
+
+	<!-- Contact Form -->
+	<section id = "contactForm">
+	  <div class="container-lg my-5">
+		  <div class="text-center">
+			  <h4 class ="slogan">Contact Form</h4>
+			  <p class="bodyfont">The website will expand to include more filters. In the meantime, if you find any errors or have suggestions, please fill the form. below</p>
+		  </div>
+
+
+		<form action="https://formspree.io/f/xrgwjbjy" method="POST"> 
+			<div class="row justify-content-center mb-2 subtitles">
+				<div class="col-lg-6">
+					<label for="email" class="form-label mb-2">Email address</label>
+					<input type="email" name="email" class="form-control mb-2" aria-describedby="emailHelp" required>
+
+					<label for="name" class="form-label mb-2">Name</label>
+					<input type="text" name="Name" class="form-control mb-2" aria-describedby="nameHelp" required>
+					<div class = "my = 3">
+						<label for="query" class="form-label mb-2">Your comment</label>
+						<textarea name="query" class = "form-control mb-2" rows="4"></textarea required>
+					</div>
+
+					<div class = "text-center slogan">
+						<button type="submit" class="btn btn-primary col-sm-auto mt-2">Submit</button>
+					</div>
+				</div>
+			</div>
+		</form>
+
+	  </div>
+	</section>
+
+	<!-- Footer -->
+	<nav class = "navbar navbar-expand-md py-4 navbar-light navs text-center "> 
+		<div class = "container-xl">
+			<a class="navbar-brand" href="#">
+				<span class="text-white "><i class="bi bi-cpu-fill"></i>
+					Filters Characterization
+				</span>
+			</a>
+
+			<p class = " justify-content-end text-right text-white subtitles"> &copy; 2023 Kirubel</p>
+
+		</div>
+	</nav>
+
+
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/plotly.js@2.24.3/dist/plotly.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.2/lib/browser/math.min.js"></script>
+
+	<script src ="assets/js/bodeplot.js"></script>
+	<script src ="assets/js/actives.js"></script>
+	<script src ="assets/js/passiveBandPass.js"></script>
+	<script src ="assets/js/passiveBandStop.js"></script>
+	<script src ="assets/js/passiveHighPass.js"></script>
+	<script src ="assets/js/passiveLowPass.js"></script>
+  <script src ="assets/js/concepts.js"></script>
+
+</body>
+</html>
