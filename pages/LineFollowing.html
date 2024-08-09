@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="../css/customstyle.css">
+	<link rel="stylesheet" href="../css/prism.css">
+    <script src ="../js/prism.js"></script>
+
+	<title>Autonomous Line Following</title>
+
+</head>
+
+
+<body>
+
+	<!-- Main navigation -->
+	<nav class = "navbar navbar-expand-md py-4 navbar-light navs "> 
+		<div class = "container-xl ">
+			<a class="navbar-brand" href="#">
+				<span class="text-white "><i class="bi bi-car-front"></i>
+          Autonomous Path Following
+				</span>
+			  </a>
+
+			  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-list" aria-controls="nav-list" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			  </button>
+
+			  <div class="collapse navbar-collapse justify-content-end align-center" id="nav-list">
+				<ul class="navbar-nav ">
+				  <li class="nav-item">
+					<a class="nav-link text-white" href="../index.html" style="font-size: 1.3rem; font-family: 'Comic Sans MS', 'Comic Sans', cursive;">Back to Personal Site</a>
+				  </li>
+
+				</ul>
+			  </div>
+	 
+		</div>
+
+	</nav>
+
+	<!-- Intro -->
+	
+	<section id="intro">
+	  <div class="container-lg my-5">
+		<div class = " text-center slogan mb-4">
+			Autonomous Line Following Challenge
+		</div>
+
+		<div class=" row justify-content-center align-items-center serif" >
+
+			<p class=" mb-4 ">Inspired by the RoboCupJunior Rescue Line competition, this project involves creating an autonomous jetbot that navigates a dynamic field made up of modular tiles with different patterns. The unpredictable layout of these tiles introduces complexity to the robot's pathfinding, simulating real-world challenges with a white floor and different color patches with specified meaning such as turning. The project emphasizes the importance of adaptability to environmental factors such as lighting and new obstacles. 
+
+        The main goals are to develop a robot that can follow a black line on a white floor through a field with distinct patterns, efficiently navigating intersections marked with green squares and adapting its path as needed. The robot must also recognize and respond to stop signs (red patch) and varied environmental conditions. By incorporating computer vision techniques, including image processing and contour analysis with OpenCV, the project achieves real-time decision-making and demonstrate a thorough understanding of autonomous robotic systems in accordance with previous competition's rules and requirements. This project was done in collaboration with Lukelo Luoga and Aya Al Mir from NYU Abu Dhabi with the code found at  &nbsp;
+        <a href="https://github.com/Kirubelsol/Projects/tree/main/Autonomous%20Path%20Following" target="_blank" style="text-decoration: none;">
+            <i class="bi bi-github" style="font-size: 1.2em; "></i> 
+        </a>          
+        with the video demo found at the <a href="#video" style="text-decoration: none; color: #1276c8;">end</a>.
+
+			</p>
+
+      <div class="text-center">
+			  <h5>Implementation</h5>
+		  </div>
+
+      <p class=" mb-4 ">
+        Overall, the project involves using the Jetbot kit and its camera to capture images and employs computer vision techniques implemented with OpenCV for navigation. The image processing pipeline includes converting images to grayscale, applying thresholding to identify the black line on a white floor, and detecting green squares as intersection markers. The robot's movement is guided by the position of the detected line, and it makes decisions at intersections based on the recognition of green squares. The system integrates functions for finding intersections, filtering outliers, and processing stop signs, demonstrating a combination of image processing, contour analysis, and decision-making for autonomous navigation. Additionally, the implementation includes widgets for real-time visualization of processed images and key parameters using Jupyter widgets. The main parts of the project are shown below. 
+			</p>
+
+      <p class=" mb-3">
+        <span class = "titles"> Line Following: </span> The <i>line_follow</i>  function is a vital part of the project's image processing and control system. It starts by converting the input image from color (BGR) to grayscale to streamline further processing. Next, manual thresholding is applied to generate a binary image, distinguishing areas of interest (line patches) from the background. The function then uses cv2.findContours to detect contours, which represent the boundaries of white regions in the binary image. The largest contour, corresponding to the detected line, is identified based on its area.
+
+        The centroid of this contour is calculated using moments, and a circle is drawn at this centroid on the original image as shown below. The robot's movement is then directed based on the x and y coordinates of the centroid: moving forward, turning right, or turning left to follow the line. Additionally, if the y-coordinate of the centroid is below a certain threshold, a forward movement is initiated. The grayscale thresholded image and the annotated original image are updated in display widgets for real-time observation. This function is crucial in enabling the robot to autonomously follow a designated line using visual cues from the captured image.
+      </p>
+
+      <div class = "row justify-content-center ">
+        <div class="text-center mb-3 col-md-4">
+            <img src="../img/LineFollowing/original.JPG" class = "rounded" width = "70%"  alt= "Original Image">
+            <p class="subtitles">Captured Image (blue dot = centroid of contour for the robot to move to)
+               </p>
+        </div>
+
+        <div class="text-center mb-3 col-md-4">
+            <img src="../img/LineFollowing/threshold.JPG" class = "rounded" width = "66%"  alt= " Black Line Thresholded Image ">
+            <p class="subtitles"> Black Line Thresholded Image </p>
+        </div>
+      </div>
+
+      <p class=" mb-3">
+        <span class = "titles"> Green Patch Detection: </span> The <i>process_green_square </i> function inside the notebook plays a key role in detecting and analyzing green squares within a specific region of the captured camera image. The function starts by converting the image to the HSV color space to better isolate the green color. A mask is then created to highlight areas within specified green color bounds. The function identifies contours representing green squares, and if fewer than a threshold (in this case 3) are found, it switches to the stop sign processing function. Otherwise, it focuses on the largest green contour detected.
+
+        The centroid of this contour is calculated to determine its x and y coordinates, which are displayed through labeled widgets. The function also computes the total area covered by all green contours. Based on predefined conditions, such as the centroid’s position and the total green area, the function makes navigation decisions for the robot. These decisions can include turning at intersections, making U-turns, or continuing straight, depending on the contextual criteria defined in the code. For instance, U-turns have green pathces in both side of intersection giving a higher area. So if the green contour is higher than a threshold, a U-turn is executed. Additionally, the function provides visual feedback by displaying the green mask image in a widget for real-time monitoring.
+      </p>
+
+      <p class=" mb-3">
+        <span class = "titles"> Intersection Detection: </span> Finding intersection of lines in the navigation is an essential aspect especially for identifying what turn to make. The <i>find_intersection function</i> is designed to detect intersection points in an image. It starts by converting the input image to grayscale and applying thresholding, followed by Canny edge detection to highlight key features. Using the probabilistic Hough transform, the function detects line segments within the image. It then examines pairs of these line segments, calculating their intersection points through linear algebra.
+
+        To improve accuracy, the function filters out outlier points, only retaining points within a specified range. The valid intersection points are then averaged to estimate the center of the intersection. The function returns this average point as a tuple (x, y) or None if no valid intersections are found. This averaged (x,y) value is essential in making turns. For instance, if the averaged (x,y) point is (50,100) for the black path line while for the green path it is (70,100) a right turn is made.
+
+      </p>
+
+      <div class = "row justify-content-center ">
+        <div class="text-center mb-3 col-md-4">
+            <img src="../img/LineFollowing/intersectionpt.JPG" class = "rounded" width = "70%"  alt= "Intersection Points">
+            <p class="subtitles">The four green dots indicating the intersection points
+               </p>
+        </div>
+
+        <div class="text-center mb-3 col-md-4">
+            <img src="../img/LineFollowing/patches.JPG" class = "rounded" width = "68%"  alt= " Patch Averages ">
+            <p class="subtitles"> Center of intersection for the black line and for the green patch </p>
+        </div>
+      </div>
+
+      <p class=" mb-3">
+        <span class = "titles"> Stop Sign Detection: </span> The <i>process_stop_sign function</i> starts by converting a cropped image to the HSV color space. It defines two ranges for the red color, creating separate masks for each range and then combining them into a single mask representing red. Using OpenCV's contour detection, the function identifies contours of red squares. If fewer than certain threshold contours are found, indicating an unclear stop sign detection, the function switches to the line_follow logic. If multiple contours are detected, the function focuses on the largest contour, presumed to be the primary red square. It calculates the centroid of this contour using the moments function. If the centroid's y-coordinate (cy) is greater than 85, indicating it's near the bottom of the image, the robot is instructed to stop, and a message is printed. This setup assumes the stop sign appears near the bottom of the field of view, signaling the robot to halt at an intersection. 
+      </p>
+
+      <div class = "row justify-content-center ">
+        <div class="text-center mb-3 col-md-4">
+            <img src="../img/LineFollowing/redpatch.JPG" class = "rounded" width = "60%"  alt= "Red Patch">
+            <p class="subtitles">Red patch detected by camera
+               </p>
+        </div>
+
+        <div class="text-center mb-3 col-md-4">
+            <img src="../img/LineFollowing/redcontour.JPG" class = "rounded" width = "60%"  alt= " Red Contour">
+            <p class="subtitles"> Red line block threshold </p>
+        </div>
+      </div>
+
+      <p >
+        <span class = "titles"> Updating Captured Images: </span> The <i> update_image function </i> is integral to the robot's image processing and navigation logic. Linked to the camera, it activates whenever a new image is captured every few milliseconds. The function first crops the captured image to focus on the region of interest, then passes the cropped image to the process_green_square function. This function handles the primary decision-making tasks involving green square detection, intersection analysis, and stop sign recognition. The update_image function also calls other specialized functions such as line_follow, process_stop_sign, and find_intersection to manage specific aspects of image analysis. This modular approach allows update_image to serve as a high-level orchestrator, overseeing the flow of information and decisions during each iteration. Moreover, the function updates various widgets, displaying the green mask, average intersection coordinates, and area labels, which provide real-time feedback on the robot's visual perception. By managing the coordination and execution of the robot's image processing pipeline, the update_image function ensures the seamless integration of various functionalities required for autonomous navigation.
+      </p>
+
+      <div class="text-center mb-3 col-md-6">
+				<img src="../img/LineFollowing/flowchart.png" class = "rounded" width = "90%"  alt="Design Flow Chart">
+				<p class="subtitles">Design Flow Chart</p>
+			</div>
+
+      <div id="video" class = "row justify-content-center col-md-8">
+        <iframe src="https://drive.google.com/file/d/1fodB1sXJLQYMU-Foi3ueG5iQFja3Qm0H/preview" width="400" height="500" allow="autoplay"></iframe>
+      </div>
+
+      
+
+    </div>
+
+   
+	</section>
+
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/plotly.js@2.24.3/dist/plotly.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.2/lib/browser/math.min.js"></script>
+
+	<script src ="assets/js/prism.js"></script>
+	
+
+
+</body>
+</html>

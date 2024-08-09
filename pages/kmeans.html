@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="../css/customstyle.css">
+	<link rel="stylesheet" href="../css/prism.css">
+    <script src ="../js/prism.js"></script>
+
+	<title>K-means and PCA</title>
+
+</head>
+
+
+<body>
+
+	<!-- Main navigation -->
+	<nav class = "navbar navbar-expand-md py-4 navbar-light navs "> 
+		<div class = "container-xl ">
+			<a class="navbar-brand" href="#">
+				<span class="text-white "><i class="bi bi-bar-chart"></i>
+          K-means and PCA
+				</span>
+			  </a>
+
+			  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-list" aria-controls="nav-list" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			  </button>
+
+			  <div class="collapse navbar-collapse justify-content-end align-center" id="nav-list">
+				<ul class="navbar-nav ">
+				  <li class="nav-item">
+					<a class="nav-link text-white" href="../index.html" style="font-size: 1.3rem; font-family: 'Comic Sans MS', 'Comic Sans', cursive;">Back to Personal Site</a>
+				  </li>
+
+				</ul>
+			  </div>
+	 
+		</div>
+
+	</nav>
+
+	<!-- Intro -->
+	
+	<section id="intro">
+	  <div class="container-lg my-5">
+		<div class = " text-center slogan mb-4">
+			K-means Clustering and PCA Dimension Reduction 
+		</div>
+
+		<div class=" row justify-content-center align-items-center serif" >
+
+			<p class=" mb-4 ">K means is a well-known unsupervised learning algorithm used for clustering a dataset into a distinct K-clusters. The main steps involve creating K centers for each cluster and assigning the data points to the the center creating clusters that are more similar to each other in their features than in other clusters. This method is used in data segmentation, image compression, and feature learning to reduce the complexity of the data. The main steps involved are written below and the complete code with a detailed explanation for both K-means and Principal Component Analysis (PCA) is provided in the Jupyter Notebook at &nbsp;
+        <a href="https://github.com/Kirubelsol/Projects/tree/main/KmeansPCA" target="_blank">
+            <i class="bi bi-github" style="font-size: 1.2em;"></i> 
+        </a>          
+
+			</p>
+
+      <div>
+        <p class=" mb-1">
+          <span class = "titles"> K-means steps:
+          <ul>
+            <li >
+              Choose the number of clusters that you want to divide the data into and initialize K centers randomly. 
+            </li>
+    
+            <li >
+              Assign each data point to the nearest cluster by computing the eucledian distance of the point with the centers. 
+            </li>
+            
+            <li >
+              Recompute the cluster centers using the mean of all the data points assigned to each cluster and update the centers. 
+            </li>
+    
+            <li >
+              Repeat the above two steps until a certain maximum number of iterations or until the centers don't change significantly (the centers stabilize).
+            </li>
+    
+          </ul>
+        </p>
+      </div>
+
+      <div class = "row justify-content-center ">
+        <div class="text-center col-md-4">
+            <img src="../img/kmeans/original.JPG" class = "rounded" width="90%" alt= "Original Data">
+        </div>
+
+        <div class="text-center col-md-4">
+            <img src="../img/kmeans/kmeans.JPG" class = "rounded" width="90%" alt= "kmeans clustered">
+        </div>
+      </div>
+
+      <p class=" mb-2 ">
+        As we can see from the above image, the one on the left is the original data with 4 clusters and on the right is the K-means clustered. It is clear that, the centers and the clusters are not accurate, which can be explained by the initialization method of the centers. This is addressed in the <i> K-means++ </i>method that uses a different initialization method. Rather than choosing all the centers randomly, K-means++ selects the initial centers in a way that spreads them out more evenly improving the clustering results. The first center is chosen randomly. Then calculate the distance of each data point from the nearest center and choose the next center with a probability proportional to the square of the distance. Afterward, continue the process similiar as K-means until the centers don't change significantly. As we can see from the image below, the results are better than K-means. 
+			</p>
+
+      <div class="text-center mb-3 col-md-6">
+				<img src="../img/kmeans/kmeansplus.JPG" class = "rounded" width = "70%"  alt="kmeans++ result">
+				
+			</div>
+
+      <p class=" mb-4 ">
+        Kmeans clustering can be used for image compression by reducing the number of colors in the image while preserving the overall appearance as much as possible. Below is an example using K-means++ clustering (k=20). 
+			</p>
+
+      <div class = "row justify-content-center ">
+        <div class="text-center col-md-4">
+            <img src="../img/kmeans/originaldog.JPG" class = "rounded" width="90%" alt= "Original Dog">
+        </div>
+
+        <div class="text-center col-md-4">
+            <img src="../img/kmeans/dogkmeans.JPG" class = "rounded" width="90%" alt= "kmeans++ of dog image">
+        </div>
+      </div>
+
+      <div>
+        <p class=" mb-2 ">
+          Principal Component Analysis is a technique used for dimensionality reduction by transforming a high dimensional data to a lower dimension while retaining as much variance as possible. This is used to make the data easier for analysis and visualization while also reducing the computational cost as most data can have high dimension but can be represented in lower while keeping as much information. This method can also be used in feature extraction and preprocessing data in machine learning by reducing dimensionality of the data. The general steps invovled are: 
+          <ul>
+            <li >
+              Center the data by substracting the mean and dividing by the standard deviation. \( {X^{'}} = \frac{X - \mu}{\sigma} \)
+            </li>
+    
+            <li >
+              Compute the covariance matrix of the data to understand the variance and relationship between the features of the data. \( \Sigma = \frac{1}{n - 1} {X^{{'}^{T}}} X^{'} \) where \( n \) is the number of data points and \( \Sigma \) is the covariance matrix.
+            </li>
+            
+            <li >
+              Determine the eigenvectors of the covariance matrix which represent the direction of the principal component and the eigenvalues which represent the magnitude of variance in the directions. \( \Sigma v = \lambda v \) where \( \lambda \) is the eigenvalue and \( v \) is the corresponding eigenvector. 
+            </li>
+    
+            <li >
+              Sort the eigenvalues in descending order where the eigenvectors corresponding to the sorted eigenvalues are the principal components. 
+            </li>
+
+            <li >
+              Select the top k eigenvectors with the highest variance (eigenvalue) to form the principal component matrix and transform the data into this new coordinate system, reducing the data into k dimension. 
+            </li>
+    
+          </ul>
+
+        </p>
+      </div>
+      
+      <div class ="codeSection mb-1 col-md-8">
+				<pre><code class="language-python">
+          #center data
+          centered_m = (m - np.mean(m,axis=0))
+          
+          def COV_PCA(data):
+              
+              #find covariance of centered data
+              cov = (np.matmul(data.T,data)/(data.shape[0]-1))
+          
+              #find eigen values and eigenvectors
+              s,v=np.linalg.eig(cov)
+          
+              #sort both in decsending order of eigen values
+              indices = np.argsort(s)[::-1]
+              s = s[indices]
+              v = v[:,indices]
+          
+              #picking k value
+              s_sum = np.sum(s)
+              s_variation = s/(s_sum)
+              s_cumsum = np.cumsum(s_variation)
+              k_s = np.arange(1,s.size+1)
+              k = k_s[np.argmax(s_cumsum>0.95)]
+          
+              principal_comps = (v[:, :k])
+              
+              return(s,v,principal_comps,k)
+          
+          s,v,principal_comps,k = COV_PCA(centered_m)
+          
+          #print eigen values and eigen vectors
+          print(f"The eigenvalues are: {s} \n")
+          print(f"The eignevectors are (an eigenvector is a column vector here): \n {v} \n")
+          
+          m_compressed = np.dot(centered_m, principal_comps)
+          print(f"The principal components: \n{principal_comps}")
+				</code></pre>
+      </div>
+    
+		
+
+      <div class = " text-center">
+        <p class="subtitles">Code Snippet for PCA using covariance matrix</p>
+      </div>
+
+      <p class=" mb-2 ">
+        PCA can also be used to reduce the number of features (pixels) in a high resolution set to a smaller set of principal components, which can also be used in image compression. Below is an example using two different principal components (k values). The Labeled Faces in the Wild dataset is used where the fourth image in the dataset is picked, the mean of all the images in the dataset is shown, and the reconstruction with two k values (5 and 50) is presented. As we can see the higher the k the closer it looks to the original image but at a cost of higher features.   
+      </p>
+
+      <div class = "row justify-content-center ">
+        <div class="text-center col-md-4">
+            <img src="../img/kmeans/forthoriginal.JPG" class = "rounded" width="300" height="350" alt= "Forth Original Image">
+        </div>
+
+        <div class="text-center col-md-4">
+            <img src="../img/kmeans/meanimage.JPG" class = "rounded" width="300" height="350" alt= "mean image">
+        </div>
+      </div>
+
+      <div class = "row justify-content-center ">
+        <div class="text-center col-md-4">
+            <img src="../img/kmeans/k5.JPG" class = "rounded" width="300" height="350" alt= "K = 5 image">
+        </div>
+
+        <div class="text-center col-md-4">
+            <img src="../img/kmeans/k50.JPG" class = "rounded" width="300" height="350" alt= "K = 50 image">
+        </div>
+      </div>
+
+    </div>
+
+	</section>
+
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/plotly.js@2.24.3/dist/plotly.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.2/lib/browser/math.min.js"></script>
+
+	<script src ="assets/js/prism.js"></script>
+	
+
+
+</body>
+</html>

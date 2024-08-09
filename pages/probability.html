@@ -1,0 +1,558 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="../css/customstyle.css">
+	<link rel="stylesheet" href="../css/prism.css">
+
+	<title>Probability and Statistics</title>
+
+</head>
+
+
+<body>
+
+	<!-- Main navigation -->
+	<nav class = "navbar navbar-expand-md py-4 navbar-light navs "> 
+		<div class = "container-xl ">
+			<a class="navbar-brand" href="#">
+				<span class="text-white "><i class="bi bi-graph-up"></i>
+                    Probability and Statistics
+				</span>
+			  </a>
+
+			  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-list" aria-controls="nav-list" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			  </button>
+
+			  <div class="collapse navbar-collapse justify-content-end align-center" id="nav-list">
+				<ul class="navbar-nav ">
+				  <li class="nav-item">
+					<a class="nav-link text-white" href="../index.html" style="font-size: 1.3rem; font-family: 'Comic Sans MS', 'Comic Sans', cursive;">Back to Personal Site</a>
+				  </li>
+
+				</ul>
+			  </div>
+	 
+		</div>
+
+	</nav>
+
+	<!-- Intro -->
+	
+	<section id="intro">
+	  <div class="container-lg my-5">
+		<div class = " text-center slogan mb-4">
+			Probability and Statistics Project: Zombie Apocalypse
+		</div>
+
+		<div class=" row justify-content-center align-items-center serif" >
+
+			<p class=" mb-4 ">The project, Zombie Apocalypse, is a simulation and analysis of human and zombie interactions in a square-shaped city using topics of probability and statistics. The square-shaped city is represented in MATLAB as a square matrix with each cell having a value of -1, 0, or 1 representing zombie, empty cell, and human respectively. The problem involves choosing a particular cell and deciding on a neighbor cell to move to depending on the laws of motion. This includes assigning a score to different moves and partitioning the 0 to 1 range in accordance with the number of neighbors and the scores of moves. Hence, picking a target cell would involve generating a random number between 0 and 1, and selecting the neighbor that includes the random number. Besides identifying the target, the project involves deciding and implementing the initial distribution of zombies, humans, and empty cells, and analyzing the progression of zombies and humans over the course of the simulation depending on the different probability parameters chosen, such as the probability of humans killing a zombie. The project also includes making sure that each probability formulated respects the axioms and identifying true probabilities both in simulation and analytically. This project can represent different scenarios and applications in real life from the progression of different living organisms in a certain habitat over time in ecology to risk assessments.
+			</p>
+
+
+			<div class="text-center mb-3 col-md-6">
+				<img src="../img/Zombie/zombiematrix.PNG" class = "rounded" width = "80%"  alt=" Field with zombies and humans ">
+				<p class="subtitles">Fig 1: Field with zombies and humans</p>
+			</div>
+
+			<div class = " text-center slogan mb-2">
+				Initialization
+			</div>
+
+            <p class=" mb-3 ">
+                The initial configuration of the matrix can be simulated as a sum of two Bernoulli random variables with the probability of a human and the probability of a zombie being in the cell passed in as arguments. The syntax is: 
+			</p>
+
+            <p class = "text-center">
+				\( Field\_track(:,:,1)= binornd(1,pLiving,N,M) + (-1 * binornd(1,pZombies,N,M)) \) 
+			</p>
+
+            <p class=" mb-3 ">
+                For zombies, the Bernoulli variable generated is multiplied by -1 as it represents zombies. From the formula, we can understand that the true probability of a human or zombie will be less than or equal to the passed probability as the sum of -1 and 1 will lead to 0, an empty cell. The Bernoulli method can be also used to demonstrate the laws of large numbers and other properties in probability. However, a simple implementation of initialization can be achieved using randsrc MATLAB function. 
+			</p>
+
+            <p class = "text-center mb-4">
+				\( Field\_track(:,:,1) = randsrc(size,size,[-1,0,1;pzombies,pempty,phumans]) \)
+            </p>
+
+            <div class = " text-center slogan mb-4">
+				Calculating true probability when using Bernoulli&#39;s initialization method
+			</div>
+
+            <p class=" mb-3 ">
+                Assume \( pLiving \) represents the probability of a human being in the cell, while \( pZombie \) represents that of zombies. As the initialization is a sum of two Bernoulli random variables, the case for each scenario is as follows.
+			</p>
+			
+            <div class="text-center mb-3 col-md-8 ">
+                <table class="table table-bordered text-center">
+
+                    <thead>
+                        <tr>
+                            <td>The creature in cell</td>
+                            <td>Value generated by human Bernoulli</td>
+                            <td>Value generated by zombie Bernoulli</td>
+                            <td>Sum</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Human in cell</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>1</td>
+                        </tr>
+
+                        <tr>
+                            <td>Zombie in cell</td>
+                            <td>0</td>
+                            <td>-1</td>
+                            <td>-1</td>
+                        </tr>
+
+                        <tr>
+                            <td rowspan="2">Empty cell</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+
+                        <tr>
+                            <td>1</td>
+                            <td>-1</td>
+                            <td>0</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+				<p class="subtitles">Table 1:  Initialization using Bernoulli Random Variable </p>
+			</div>
+
+            <p class=" mb-3 ">
+                Hence the true probability for each is:
+			</p>
+
+            
+            <p class = " mb-3">
+				\( \qquad  \bullet \; pHuman =  pLiving*(1-pZombie) \quad eq(1)\)
+            </p>
+            <p class = " mb-3">
+                \( \qquad  \bullet \; pZombies = pZobmie*(1-pLiving)  \quad eq(2)\)
+            </p>
+            <p class = " mb-3 ">
+                \( \qquad  \bullet \; pEmptycell = (1-pZombie)*(1-pLiving) + (pZombie*pLiving) \; or \; (1-Phuman-Pzombies) \quad eq(3)\)
+            </p>
+
+            <p class = " mb-3 ">
+                For instance if \( pLiving \) and \( pZombie \) were used as 0.3 and 0.1 respectively. This means analytically:
+            </p>
+
+            <p class = " mb-3">
+				\( \qquad  \bullet \; True \; probability \; of \; human = (0.3)*(1-0.1) = 0.27\)
+            </p>
+            <p class = " mb-3">
+				\( \qquad  \bullet \; True \; probability \; of \; zombie = (0.1)*(1-0.3) = 0.07 \)
+            </p>
+
+            <p  class = " mb-3">
+                Then the true probabilities were calculated using simulation. A 100 by 100 matrix was used for initialization. The probability calculation via simulation (which is the number of humans per number of cells and that of zombies) became 0.271 and 0.0692 for humans and zombies respectively.The probabilities are approximately equal to the calculated ones, but the laws of large numbers can be used to check that they match. The law of large numbers is as follows:
+            </p>
+
+            <p class = " mb-3 ">
+				\( \qquad  \bullet \;  Let X_1, X_2 ,… , X_i … be \; a \; sequence \; of \; independent \; random \; variables \; with \; E(X_i) =  \mu \; and \; Var(X_i) \) <br> <br>
+                \( \qquad  \bullet \;  Let (calculated \; average) =n^{-1} \sum_{i=1}^{n} {X_i}. \; Then, \; for \; any \;  ∊>0 \) <br>
+               
+            </p >
+
+            <p class = "text-center mb-4" >
+                \(   P (| \overline{X}_n - µ| > ∊) → 0 \; as \; n→ ∞  \quad eq(4) \)
+            </p>
+
+            <p>
+                Hence, in this case, we have actually been using laws of large number concept.  The number of cells is large (100*100 = 10,000) with each cell being a sum of independent Bernoulli random variables explaining the reason why the value from simulations is close to the true analytic value. To better understand this, an initialization with different square matrix size was done. 
+            </p>
+
+            <div class="text-center mb-3 col-md-8 ">
+                <table class="table table-bordered text-center">
+
+                    <thead>
+                        <tr>
+                            <td>Cell Numbers</td>
+                            <td>pHumans (simulation)</td>
+                            <td>pZombies (simulation)</td>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>4 (2x2)</td>
+                            <td>0.25</td>
+                            <td>0.125</td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td>25 (5x5)</td>
+                            <td>0.26</td>
+                            <td>0.1</td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td >100 (10x10)</td>
+                            <td>0.285</td>
+                            <td>0.085</td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td>900 (30x30)</td>
+                            <td>0.2761</td>
+                            <td>0.0628</td>
+                        </tr>
+
+                        <tr>
+                            <td>2500 (50x50)</td>
+                            <td>0.2672</td>
+                            <td>0.0692</td>
+                        </tr>
+
+                        <tr>
+                            <td>10000 (100x100) </td>
+                            <td>0.2710</td>
+                            <td>0.0692</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+				<p class="subtitles">Table 2: Simulation Probabilities as number of cells increase</p>
+			</div>
+
+            <p class = " mb-3 ">
+                As we can see when the number of cells increases, the probabilities start to converge. However, if you want to increase the number of cells by much more, usually normal computer storage capabilities can&#39;t handle it and require another optimization. If the initialization is done multiple times and the average of that is taken, the difference between the simulation and analytic calculation will approach 0 as the number of initializations approaches infinity. Each initialization can be considered as an independent random variable being a sum of random Bernoullis. The initialization is repeated 10000 times and after averaging the probabilities in each initialization, the probability of humans and zombies became 0.2699 and 0.0700 respectively, which matches the analytic probability. 
+            </p>
+
+            <div class = " text-center slogan mb-4">
+                The laws of motion
+            </div>
+
+            <p class = " mb-3 ">
+                In this project, in a single time step, only one creature is allowed to move. This involves selecting the cell with the creature randomly, picking a target cell from the neighbor to move to, and trying to move to that cell.  After selecting the cell, the neighborhood is identified, and a target cell will be chosen. The neighborhood of a cell includes the adjacent cells of the cell which would be at most 9. For choosing the target cell probability that depends on the scores of each move is used. A score is assigned to different kinds of moves. For instance, the score of humans moving to zombies is low (0) compared to moving to an empty cell (2). The values -1,0,1 represent zombies, empty cells, and humans respectively.
+            </p>
+
+            
+            <div class="text-center mb-3 col-md-8 ">
+                <table class="table table-bordered text-center">
+
+                    <thead>
+                        <tr>
+                            <td> \( X_{i,j} \) (current cell)</td>
+                            <td> \( X_{k,l} \) (target cell)</td>
+                            <td>Score</td>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>-1,0,1</td>
+                            <td>k,l ∉ \( N^{i,j} \) (not in the neighborhood) </td>
+                            <td>0</td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td>0</td>
+                            <td>0,-1,0</td>
+                            <td>0</td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td >1</td>
+                            <td>-1</td>
+                            <td>0</td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>2</td>
+                        </tr>
+
+                        <tr>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1</td>
+                        </tr>
+
+                        <tr>
+                            <td>-1 </td>
+                            <td>-1</td>
+                            <td>0</td>
+                        </tr>
+
+                        <tr>
+                            <td>-1 </td>
+                            <td>0</td>
+                            <td>1</td>
+                        </tr>
+
+                        <tr>
+                            <td>-1 </td>
+                            <td>1</td>
+                            <td>2</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+				<p class="subtitles">Table 3: Scores for each move</p>
+			</div>
+
+            <p class = " mb-3 ">
+                These score values are then used in calculating the probability of target cell choice while respecting the axioms of probability. The probability of    \( X_{i,j} \) (the current cell) moving to \( X_{k,l} \) (the target cell) is calculated as
+            </p>
+    
+            <p class = " mb-3 text-center">
+                \( p_{i,j}(k,l) = { S_{i,j→k,l} \; (X_{i,j},X_{k,l}) \over { \sum_{(m,n) \in N^{i,j}}^{} \; ( S_{i,j→k,l} \; (X_{i,j},X_{k,l}) \; ) } } \)
+            </p>
+            
+
+            <p class = " mb-3 ">
+                Even if the probability of moving to a certain neighbor is known, the selection of a target still remains. For this, the idea of partitioning the interval of 0 to 1 into small intervals was used with each interval equaling the probability of a specific move. Then a random number from 0 to 1 is generated and the interval in which the number landed is chosen as the target cell. In a nutshell, for motion, a cell with a being is selected at random, then a target cell to move to is chosen whereby the probability depends on the score of each possible move. After target cell selection, the interaction between the chosen cell and the target cell needs to be decided. For this, a Bernoulli random variable that depends on the probability of humans killing zombies and humans killing humans is generated. Assume phz to be the probability of a human killing a zombie, phh to be the probability of a human killing another human, \( x_{(i,j)} \) to be the current cell, and \( x_{(k,l)} \) to be the target cell. As known the probability of Bernoulli random variable is:
+            </p>
+
+            <p class = " mb-3 text-center">
+                \( p(x)= p^{x}(1-p)^{(1-x)}  \; where \; x=0 \; or \; x=1 \; eq(6)  \)
+            </p>
+      
+            <p class = " mb-3 ">
+                The following table shows the probabilities involved in the movements and interactions. 
+            </p>
+
+            <div class="text-center mb-3 col-md-8 ">
+                <table class="table table-bordered text-center">
+
+                    <thead>
+                        <tr>
+                            <td> \( X_{i,j} \)</td>
+                            <td> \( X_{k,l} \) </td>
+                            <td> \( B_{fight} \) </td>
+                            <td> \( X_{new(i,j)} \) </td>
+                            <td> \( X_{new(k,l)} \)</td>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="2">1</td>
+                            <td rowspan="2">-1 </td>
+                            <td> 1 (human wins) <br> Probability = phz </td>
+                            <td> 0 </td>
+                            <td> 1 </td>
+
+                        </tr>
+
+                        <tr>
+                            <td> 0 (human become zombies) <br> Probability = 1-phz </td>
+                            <td> -1</td>
+                            <td> -1 </td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td >1</td>
+                            <td>0</td>
+                            <td> - (human moves) <br> Probability = 1 </td>
+                            <td> 0 </td>
+                            <td> 1 </td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td rowspan="2">1</td>
+                            <td rowspan="2">1 </td>
+                            <td> 1 (human kills human) <br> Probability = phh </td>
+                            <td> 0 </td>
+                            <td> 1 </td>
+
+                        </tr>
+
+                        <tr>
+                            <td> 0 (human don't kill human) <br> Probability = 1-phh </td>
+                            <td> 1</td>
+                            <td> 1 </td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td >-1</td>
+                            <td>-1</td>
+                            <td> - (zombies don&#39;t fight each other) <br> Probability = 1 </td>
+                            <td> -1 </td>
+                            <td> -1 </td>
+                        </tr>
+
+                        <tr>
+                            <td >-1</td>
+                            <td>0</td>
+                            <td> - (zombie moves) <br> Probability = phz </td>
+                            <td> 0 </td>
+                            <td> -1 </td>
+                        </tr>
+
+                        <tr>
+                            <td rowspan="2"> -1 <br> <br> -1 </td>
+                            <td rowspan="2"> 1 <br> <br> 1 </td>
+                            <td> 1 (human wins) <br> Probability = phz </td>
+                            <td> 0 </td>
+                            <td> 1 </td>
+
+                        </tr>
+
+                        <tr>
+                            <td> 0 (human becomes zombie) <br> Probability = 1-phz </td>
+                            <td> -1</td>
+                            <td> -1 </td>
+                            
+                        </tr>
+
+                    </tbody>
+                </table>
+
+				<p class="subtitles"> Table 4: Probabilities and state update involved with creatures interactions. </p>
+			</div>
+
+            <div class = " text-center slogan mb-4">
+                Experiment Description and Parameter Settings
+            </div>
+
+            <p class = " mb-3 ">
+                This experiment is designed to simulate the zombies&#39; and humans&#39; number and progression over time depending on several parameters. For the experiment, a cell size of 100x100 is chosen with 100,000 steps for simulation (limited by the capacity of the computer). The process of the initialization has been indicated in the first section. In a single step only a single move is made at most. Hence, the number of steps chosen was made to be large to see the progression till the final stage and if one creature annihilates the other. Until this section, the laws of motion, how target cells are selected, and how interaction works have been described. In the experiment, after initialization, the cell to move is selected randomly using the randi() MATLAB function. However, the picked cell is made to be only -1 or 1 and not an empty cell as the score involved in an empty cell moving is 0. The neighbors are then identified with the vector having at most 9 elements matching the number of adjacent cells. The target cell is chosen as indicated in the laws of motion.
+            </p>
+
+
+            <p class = " mb-3 ">
+                In the experiment, the probability of humans killing zombies is 0.3, and humans killing a human is 0.1. This is to resemble a scenario where humans have a high chance of being defeated and much less likelihood of killing their own species. If a human does not kill the zombie in a fight, it will be converted to a zombie. These probabilities are essential in creating the Bernoulli variable. For instance, in an interaction where the chosen cell is a human and the target cell is a zombie, a random Bernoulli variable (0 or 1) is generated depending on the probability of a human killing a zombie. Since this probability is 0.3, human has a lower probability of killing zombie than zombie infecting human. Hence, if the value is 1 human kills the zombie and leaves its current cell to the target cell. Otherwise, in the more likely case, a zombie infects a human and both cells become zombies.  This whole process continues for 100,000 steps and the change can be observed numerically, through plots, and animations. 
+            </p>
+
+            <div class = " text-center slogan mb-4">
+                Experimental results
+            </div>
+
+            <p class = " mb-4 ">
+                The ratio of the number of humans to zombies was plotted and it was clear that the ratio was decreasing in an exponential way. The probability of humans killing a zombie was 0.3 with the human losing and being converted to a zombie being 0.7 (1-0.3=0.7). This means a zombie has a higher chance of winning and if a zombie wins it stays in its location and changes the human to zombie rather than killing it. This makes the number of zombies increase significantly compared to humans. The other factor is when humans meet each other they can also kill each other but with much less probability (0.1). Hence due to these two factors, one can expect the ratio to decrease over time and approach 0 in the end. 
+            </p>
+
+            <div class="text-center mb-4 col-md-6">
+				<img src="../img/Zombie/populationProgress.PNG" class = "rounded" width = "100%"  alt="Plot of humans and zombies probability over time">
+				<p class="subtitles mt-2">Fig 2: Plot of humans and zombies probability over time</p>
+			</div>
+
+            <div class="row mb-4">
+				<div class="text-center mb-3 col-md-6">
+					<img src="../img/Zombie/bargraphAnimation.gif" class = "rounded" width = "100%"  alt="Bar graph animation of population progress">
+                    <p class="subtitles mt-2">Fig 3: Bar graph animation of normalized population progress</p>
+					
+				</div>
+				
+                <div class="text-center mb-3 col-md-6">
+                    <img src="../img/Zombie/contour.gif" class = "rounded" width = "100%"  alt="Contour animation of population progress<">
+                    <p class="subtitles mt-2">Fig 4: Contour animation of normalized population progress</p>
+                </div>
+			</div>
+
+            <div class = " text-center slogan mb-4">
+                Additional Discussion:  Model of the Transition Probability
+            </div>
+
+            <p class = " mb-4 ">
+                The transition probability model can be used to find the probability of moving from an initial state to another state. The transition probability matrix will be used to identify these probabilities. Imagine having 4 states (A, B, C, D). The transition matrix will be
+            </p>
+
+            <p class = " mb-3 text-center">
+                 \(\begin{bmatrix} P_{A→A} & P_{A→B} & P_{A→C} & P_{A→D}  \\ P_{B→A} & P_{B→B} & P_{B→C} & P_{B→D}  \\ P_{C→A} & P_{C→B} & P_{C→C} & P_{C→D}  
+                \\ P_{D→A} & P_{D→B} & P_{D→C} & P_{D→D}  \end{bmatrix} \; eq(7) \) 
+            </p>
+
+            <p class = " mb-4 ">
+                where \( P_{A→A} \) represents the probability of state A staying on A, \( P_{A→B} \) represents the probability of state A moving to B… The sum of the row should be 1 since the sum of the probability of a state moving to all the states should be 1. In our case, which will be described later, a 100x100 matrix is used. As we know a single cell can have three states of -1, 0, 1. Hence if a 100x100 matrix is used there will be \( 3^{10,000} \) states and the transition matrix will be a \( 3^{10,000} \times 3^{10,000}  \)  matrix. Even though most entries of the matrix will be 0, this will be too large to even be modeled by a computer. Hence, to explain the possible transition probability a small matrix size will be used. We can go with a ( 2 \times 2  \) matrix where there are 81 possible states (\ (3^4) \) and the transition matrix will be an ( 81 \times 81\)matrix. The states would be 
+            </p>
+
+            <p class = " mb-3 text-center">
+                \(1 = \begin{bmatrix} -1 & -1 \\ -1 & -1  \end{bmatrix} \)   \(2 = \begin{bmatrix} -1 & -1 \\ -1 & -0  \end{bmatrix} \) 
+                \(3 = \begin{bmatrix} -1 & -1 \\ -1 & 1  \end{bmatrix} \)   \(4 = \begin{bmatrix} -1 & -1 \\ 0 & -1  \end{bmatrix} \) <br>
+                \(5 = \begin{bmatrix} -1 & -1 \\ 1 & -1  \end{bmatrix} \)   \(6 = \begin{bmatrix} -1 & 0 \\ -1 & -1  \end{bmatrix} \) 
+                \(7 = \begin{bmatrix} -1 & 1 \\ -1 & -1  \end{bmatrix} \)  \(8 = \begin{bmatrix} -1 & -1 \\ 0 & -1  \end{bmatrix} \) 
+                \(81 = \begin{bmatrix} 1 & 1 \\ 1 & 1  \end{bmatrix} \) 
+           </p>
+
+           <p class = " mb-4 ">
+                The 81 states should be labeled as we want but should be defined and set for the whole experiment. The 81x81 transition matrix will let us know the probability of each state movement. For instance, the first row will tell us the probability of the first state moving to other states including itself. In our case, this state movement involves several stages which involve choosing the cell at random, choosing the target cell, and making the movement using the probabilities involving the two creatures killing each other.  Even though the 2 by 2 matrix is used as an example, the idea can apply to larger such as 100x100 matrix. 
+            </p>
+
+            <p class = " mb-4 ">
+                As indicated the first row is the probability of the first state going to other states, with the columns indicating each state. Per the game rule a specific cell can only move to at most 9 neighboring cells including itself. Hence, probabilities are non-zero only on at most 9 of the columns for each row. In a 2x2 case, it can move to all other states. The probability of selecting the neighbor to move to depends on the score. However, first, the cell that’s going to move needs to be selected. In the code, cells with -1 or 1 are only selected. However, this would make the transition matrix highly complicated as it should accommodate for cells with 0 entries. Hence, assuming that each cell has an equal probability of being selected meaning the probability of a cell being selected in the matrix will be 1/(the number of cells). The probability of a cell being selected and choosing the target is: 
+            </p>
+
+            <p class = " mb-3 text-center">
+                \( P_{cell\_to\_target} = {P_{target} \over  {N*M}} \quad where \; N,M \; are \; rows \; and \; column \; size  \; (eq8)  \quad P_{target} calculated in eq(6) \)
+           </p>
+
+           <p class = " mb-4 ">
+                As known after choosing the target cell, another probability is involved to make the move: the fighting that involves Bernoulli. This will depend on phz (probability of human killing zombie) and phh (probability of human killing human). Since there can’t be a general formula to describe each state movement after involving these two probabilities, the probabilities have to be calculated separately for state movements. We will continue the process by taking the transition from state 5 to state 8 of the 2x2 matrix as an example.  
+            </p>    
+
+            <p class = " mb-3 text-center">
+                \(5 = \begin{bmatrix} -1 & -1 \\ 1 & -1  \end{bmatrix} → \) \(8 = \begin{bmatrix} -1 & -1 \\ 0 & -1  \end{bmatrix} \)
+           </p>
+
+           <p class = " mb-4 ">
+                The transition from state 5 to 8 can occur if the selected cell is with the element -1 (2nd row and 2nd column) and the chosen target cell is the element 1. Then to make the move, the probability of the human killing the zombie is involved. The probability can be represented as Phz. Hence for this state change to occur all these probabilities are involved: 
+            </p>    
+
+            <p class = " mb-3 text-center">
+                \(P_{5→8} =  P_{cell\_to\_target}*phz \) <br> <br> 
+                \( P_{2nd \; row \; 2nd \; column \; selection} = { 1 \over 4} \) &nbsp;  &nbsp; &nbsp; \( P_{selecting \; the \; neighbor} = {2 \over 6} \) &nbsp; &nbsp; &nbsp;
+                \(  P_{cell \_ to \_ target} = ({1 \over 4})*({2 \over 6}) = {1 \over 12} \) <br> <br> 
+                \(P_{5→8} =  ({1 \over 12})*phz \)
+
+           </p>
+
+           <p class = " mb-4 ">
+                This transition probability from state 5 to 8 will be in the 5th row and 8th column of the 81x81 transition matrix. The probabilities of the others can be calculated like this and inserted in the transition matrix. This can give us significant information on not only how to move from one state to another directly but also the probability involved in moving from one state to another final state after passing through different states. For this experiment where a 100x100 matrix is used, the transition matrix will be 310,000x310,000. Calculating this transition matrix by hand is almost impossible, hence an efficient algorithm and a better computing power is needed to do this.    
+            </p>    
+
+
+		</div>
+
+
+		
+
+	  </div>
+
+	</section>
+
+
+	
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/plotly.js@2.24.3/dist/plotly.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.2/lib/browser/math.min.js"></script>
+
+	<script src ="../js/prism.js"></script>
+	
+
+
+</body>
+</html>

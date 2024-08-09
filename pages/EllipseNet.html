@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="../css/customstyle.css">
+	
+
+	<title>EllipseNet</title>
+
+</head>
+
+
+<body>
+
+	<!-- Main navigation -->
+	<nav class = "navbar navbar-expand-md py-4 navbar-light navs "> 
+		<div class = "container-xl ">
+			<a class="navbar-brand" href="#">
+				<span class="text-white "><i class="bi bi-image"></i>
+                    Detecting Objects using Elliptical Anchor Boxes
+				</span>
+			  </a>
+
+			  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-list" aria-controls="nav-list" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			  </button>
+
+			  <div class="collapse navbar-collapse justify-content-end align-center" id="nav-list">
+				<ul class="navbar-nav ">
+				  <li class="nav-item">
+					<a class="nav-link text-white" href="../index.html" style="font-size: 1.3rem; font-family: 'Comic Sans MS', 'Comic Sans', cursive;">Back to Personal Site</a>
+				  </li>
+
+				</ul>
+			  </div>
+	 
+		</div>
+
+	</nav>
+
+	<!-- Intro -->
+	
+	<section id="intro">
+	  <div class="container-lg my-5">
+		<div class = " text-center slogan mb-4">
+			EllipseNet: Detecting rotated and elongated beyond normal objects in images using elliptical anchor boxes
+		</div>
+
+		<div class=" row justify-content-center align-items-center serif" >
+
+			<p class=" mb-4 ">This project involves building a real-time object detection model using elliptical anchor boxes instead of traditional rectangular ones. In the field of computer vision, common object detection models such as YOLO use rectangular anchor boxes, which often result in lower detection accuracy for non-rectangular shapes like elongated objects. By replacing rectangular anchor boxes with elliptical ones, this project aims to enhance precision and detection accuracy for rotated and elongated objects in images. Creating the EllipseNet model involves several crucial steps. These include understanding the architecture of models like YOLO in depth, modifying these architectures, augmenting data for training, and developing a mathematical framework for elliptical boxes. Additionally, a unique method for calculating the intersection over union (IOU) and additional helper functions to calculate average precision, train the model, and more have been implemented. The main sections of the project are explained below, and <b> the complete code with a detailed explanation is provided in the Jupyter Notebook at </b> &nbsp;
+                <a href="https://github.com/Kirubelsol/Projects/tree/main/EllipseNet" target="_blank">
+                    <i class="bi bi-github" style="font-size: 1.2em; "></i> 
+                </a>          
+			</p> 
+
+
+			<div class="text-center mb-3 col-md-6">
+				<img src="../img/EllipseNet/cat.JPG" class = "rounded" width = "70%"  alt="Detecting a Rotated Cat">
+				<p class="subtitles">Detecting a Rotated Cat </p>
+			</div>
+
+            <p class=" mb-3">
+                <span class = "titles"> Data Augmentation: </span> The first step is augmenting the data and generating a new ground truth. For this project, PASCAL VOC 2012 dataset that includes more than 16000 images across 20 different classes such as person, cat, and car is used. The rectangular bounding box details which are the x and y center of rectangular bounding box and the width, height,and class are also acquired for each image. To augment the image for the project, a random angle from 0 to 45 is acquired and each image is resized to 448x448 and rotated with the random angle generated. The labels are also concurently altered to the new center of elliptical anchor boxes with the angle being a new element.  The detailed code is found in the notebook file at the beginning. 
+			</p>
+
+            <div class = "row justify-content-center ">
+                <div class="text-center mb-3 col-md-4">
+                    <img src="../img/EllipseNet/car.JPG" class = "rounded" width="300" height="300"  alt= "Car: Original Orientation">
+                    <p class="subtitles">Car: Original Orientation </p>
+                </div>
+        
+                <div class="text-center mb-3 col-md-4">
+                    <img src="../img/EllipseNet/car_rotated.JPG" class = "rounded" width="300" height="300"  alt= "Car: Rotated">
+                    <p class="subtitles">Car: Rotated </p>
+                </div>
+            </div>
+
+            <p class=" mb-3">
+                <span class = "titles">EllipseNet Network: </span> The base structure used is from ResNet 18 with the last fully connected layer being removed and an addition convolution layer with a fully connected layer added to reshape the output to the expected 7x7x32. The input is images of 3 channel and shape of 448x448. The last layer outputs 7x7x32 where a gird size SxS of 7 is used. Each cell predicts 2 bounding box. There are 20 classes, with each bounding box having 6 elemnts (x,y,width,height,confidence score, \( \theta \) ) so each cell have C +(B*6) = 20 + (2*6) = 32 elements.  
+			</p>
+
+            <p class=" mb-3">
+                <span class = "titles"> Intersection Over Union: </span> An IOU function which finds the intersection/union of two bounding boxes is an essential function in object detection and used in multiple parts. These include comparing the predicted bounding box with the ground truth and calculating the corresponding loss, assigning the predicted box corresponding to the ground truth box, and in non-maxima suppression to remove the redundant bounding boxes. The inputs to the IOU function are two bounding boxes of shape [batchsize,7,7,5] where the 5 elements are x,y,w,h,\( \theta \) and the outputs are [batchsize,7,7,1] where the iou of corresponding cells in the 7x7 grids are found. Shapely is utilized to find IOU and since shapely is CPU based the IOU computation is not integrated with pytorch. The functions results are shown below.  
+			</p>
+
+            <div class = "row justify-content-center ">
+                <div class="text-center col-md-4">
+                    <img src="../img/EllipseNet/IOU0.JPG" class = "rounded" width="370" height="300"  alt= "0 IOU">
+                </div>
+        
+                <div class="text-center col-md-4">
+                    <img src="../img/EllipseNet/IOU1.JPG" class = "rounded" width="370" height="300"  alt= "1 IOU">
+                </div>
+            </div>
+            
+            
+            <div class = "row justify-content-center ">
+                <div class="text-center col-md-4">
+                    <img src="../img/EllipseNet/IOUhalf.JPG" class = "rounded" width="370" height="300"  alt= "0.5 IOU">
+                </div>
+        
+                <div class="text-center col-md-4">
+                    <img src="../img/EllipseNet/IOU1.JPG" class = "rounded" width="370" height="293"  alt= "0.25 IOU">
+                </div>
+            </div>
+
+            <p class=" mb-3">
+                <span class = "titles"> Mean Average Precision: </span> mAP is used to evaluate the performance of the object detection model through the epochs by combining precision and recall to a value that reflects the accuracy of the model across the different classes and taking into account both localization and classification. The steps invlove getting the predicted bounding boxes and sorting them in decreasing order of confidence score for each class. For each predicted bounding box find the ground truth with the highest IOU exceeding the IOU threshold and mark as True Positive. If no ground truth exceeds the threshold mark as false positive and ground truth boxes not matched to any prediction are marked as false negative. Then calculate the precision and recall at each prediction, plot the precision-recall curve, calculate the average precision (area under curve) for one class and average for each class. Finally use different IOU thresholds such as from 0.5 to 0.95 with step of 0.05 and find the average to get the mAP. 
+			</p>
+            
+            <p class=" mb-3">
+                <span class = "titles"> Loss Function: </span> The loss function is similar to that of YoloV1 as shown below. The only added term is  \(  \lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} 1_{ij}^{\text{obj}} \left( \theta_i - \hat{\theta}_i \right)^2  \) to account for the loss in angle prediction.
+                . The angle is divide by the range of the angle. For instance, if the angle is selected from 0 to 45 it is divided by 45. A lower lamda can also be used for this purpose. The main aim is to give it equal importance as the other ellipse coordinates (x,y,w,h) losses since each are between 0 and 1. In the equation  \(  \lambda_{\text{coord}} \) adjusts the weight of the coordinate loss, \( 1_{ij}^{\text{obj}} \) is an indicator which is 1 if the \( j_{th} 
+                \) bounding box in the \( i_{th} \) grid cell is responsible for detecting an object, else 0. 
+			</p>
+
+            
+
+            <div class = "row text-center mb-4">
+                <div class = "col-md-12">
+                    \[
+                    \begin{aligned}
+                    &\lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} 1_{ij}^{\text{obj}} \left[ (x_i - \hat{x}_i)^2 + (y_i - \hat{y}_i)^2 \right] \\
+                    &+ \lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} 1_{ij}^{\text{obj}} \left[ (\sqrt{w_i} - \sqrt{\hat{w}_i})^2 + (\sqrt{h_i} - \sqrt{\hat{h}_i})^2 \right] \\
+                    &+ \sum_{i=0}^{S^2} \sum_{j=0}^{B} 1_{ij}^{\text{obj}} (C_i - \hat{C}_i)^2 + \lambda_{\text{noobj}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} 1_{ij}^{\text{noobj}} (C_i - \hat{C}_i)^2 \\
+                    &+ \sum_{i=0}^{S^2} 1_{i}^{\text{obj}} \sum_{c \in \text{classes}} (p_i(c) - \hat{p}_i(c))^2 + 
+                    \lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} 1_{ij}^{\text{obj}} \left( \theta_i - \hat{\theta}_i \right)^2
+                    \end{aligned}
+                    \]
+                </div>
+            </div>
+
+            <p class=" mb-3">
+                <span class = "titles"> Visualization Result: </span> After training for 100 epoch, some of the visulaizaiton of the detection results can be seen below. 
+			</p>
+
+            
+            <div class = "row justify-content-center ">
+                <div class="text-center col-md-4">
+                    <img src="../img/EllipseNet/motor_norotate.JPG" class = "rounded" width="300" height="300"  alt= "Motorcycle and Person: No Rotation">
+                    <p class="subtitles">Motorcycle and Human: No rotation</p>
+                </div>
+        
+                <div class="text-center col-md-4">
+                    <img src="../img/EllipseNet/train_norotate.JPG" class = "rounded" width="300" height="300"  alt= "Train: No Rotation">
+                    <p class="subtitles">Tran: No Rotation</p>
+                </div>
+            </div>
+            
+            
+            <div class = "row justify-content-center ">
+                <div class="text-center col-md-4">
+                    <img src="../img/EllipseNet/cyclerotate.JPG" class = "rounded" width="300" height="300"  alt= "Bicycle: Rotated">
+                    <p class="subtitles">Bicycle: Rotated </p>
+                </div>
+        
+                <div class="text-center col-md-4">
+                    <img src="../img/EllipseNet/horse_rotate.JPG" class = "rounded" width="300" height="300"  alt= "Horse and Person: Rotated">
+                    <p class="subtitles">Horse and Person: Rotated </p>
+                </div>
+            </div>
+
+    
+		</div>
+        
+	  </div>
+
+	</section>
+
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/plotly.js@2.24.3/dist/plotly.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.2/lib/browser/math.min.js"></script>
+
+	<script src ="assets/js/prism.js"></script>
+	
+
+
+</body>
+</html>

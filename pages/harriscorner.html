@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="../css/customstyle.css">
+	<link rel="stylesheet" href="../css/prism.css">
+    <script src ="../js/prism.js"></script>
+
+	<title>Harris Corner</title>
+
+</head>
+
+
+<body>
+
+	<!-- Main navigation -->
+	<nav class = "navbar navbar-expand-md py-4 navbar-light navs "> 
+		<div class = "container-xl ">
+			<a class="navbar-brand" href="#">
+				<span class="text-white "><i class="bi bi-bounding-box"></i>
+                    Harris Corner Detector
+				</span>
+			  </a>
+
+			  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-list" aria-controls="nav-list" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			  </button>
+
+			  <div class="collapse navbar-collapse justify-content-end align-center" id="nav-list">
+				<ul class="navbar-nav ">
+				  <li class="nav-item">
+					<a class="nav-link text-white" href="../index.html" style="font-size: 1.3rem; font-family: 'Comic Sans MS', 'Comic Sans', cursive;">Back to Personal Site</a>
+				  </li>
+
+				</ul>
+			  </div>
+	 
+		</div>
+
+	</nav>
+
+	<!-- Intro -->
+	
+	<section id="intro">
+	  <div class="container-lg my-5">
+		<div class = " text-center slogan mb-4">
+			Implementation of Harris Corner Detector
+		</div>
+
+		<div class=" row justify-content-center align-items-center serif" >
+
+			<p class=" mb-4 ">Harris corner detection is a simple and efficient algorithm used for detecting corners in computer vision applications. Corners are points in images where there is a significant change in brightness (pixel intensity) in multiple direction rather than edges where there is change in one direction. Tracking corners is essential in multiple computer vision applications including image matching, motion tracking, 3D reconstruction, and computer vision as corners are invariant to lightning, translation, and rotation. The essential steps in finding the corners involve finding the intesnity gradient of the image in both horizontal and vertical direction. Afterwards, a matrix to capture gradient information to analyze change in intensity is created, followed by implementation of corner response function to calculate the likelihood of a pixel being a corner. Finally, non-maxima suppression to identify the local maxima in the corner response function is done. The main points of the implementation is found below and the complete code with a detailed explanation is provided in the Jupyter Notebook at &nbsp;
+                <a href="https://github.com/Kirubelsol/Projects/tree/main/HarrisCornerDetector" target="_blank">
+                    <i class="bi bi-github" style="font-size: 1.2em;"></i> 
+                </a>          
+			</p>
+
+            <p class=" mb-3">
+                <span class = "titles"> Computing Gradients: </span> Initially the input image should be converted to gray scale since the algorithm works on single-channel image to detect the corners. <span class="code-font"> cv2.cvtColor </span>function from OpenCV library can be used for the conversion. Afterward the gradient in the x and y direction ( \( I_x = \frac{\partial I}{\partial x}, \quad I_y = \frac{\partial I}{\partial y} \) ) can be found using the sobel operator. 
+			</p>
+
+            <div class="text-center mb-3 col-md-6">
+				<img src="../img/harriscorner/harriscorner1.JPG" class = "rounded" width = "85%"  alt="Detecting corners in an image">
+				<p class="subtitles">Detecting corners in an image</p>
+			</div>
+
+            <div class ="codeSection mb-1 col-md-8">
+				<pre><code class="language-python">
+                #gradient operation 
+                def gradient_operation(image):
+                    
+                    # The sobel kernels for finding gradient (intensity change) in both directions
+                    Sobelx = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], np.float32)
+                    Sobely = np.array([[1, 2, 1], [0, 0, 0], [-1, -2, -1]], np.float32)
+                    
+                    #Convolve with sobel kernel to find gradient in both direction
+                    Gradient_x = convolve2d(image,Sobelx)
+                    Gradient_y = convolve2d(image,Sobely)
+                    
+                    #find the total magnitude and angle 
+                    Gradient = np.hypot(Gradient_x, Gradient_y)
+                    Gradient = Gradient/Gradient.max() * 255 #normalize
+                    angle = np.arctan2(Gradient_y,Gradient_x)
+                    
+                    return(Gradient, angle, Gradient_x, Gradient_y)
+				</code></pre>
+            </div>
+
+            <div class = " text-center">
+                <p class="subtitles">Code Snippet</p>
+            </div>
+
+            <p class=" mb-3">
+                <span class = "titles">Compute the Harris Response Matrix: </span> First, compute the product of the gradients at each pixel: \( {I_x}^2 = {I_x}*{I_x}, \thinspace {I_y}^2 = {I_y}*{I_y}, \thinspace and \thinspace {I_{xy}}^2 = {I_x}*{I_y} \). Then apply guassian filter \( G_{\sigma} \) to smoothen the gradient product of each pixel to reduce noise. \( {S_x}^2 = G_{\sigma}*{I_x}^2, \thinspace {S_y}^2 = G_{\sigma}*{I_y}^2, \thinspace, {S_{xy}}^2 = G_{\sigma}*{I_{xy}}^2 \thinspace \). Afterwards, construct the harris response matrix M for each pixel. \[
+                M(x,y) = 
+                \begin{bmatrix}
+                S_{x^2}(x,y) & S_{xy}(x,y) \\
+                S_{xy}(x,y) & S_{y^2}(x,y)
+                \end{bmatrix}
+                \] 
+			</p>
+
+            <p class=" mb-3">
+                <span class = "titles"> Compute the Response: </span> The response R is found using the determinant and trace of the matrix M. \( R = \det(M) - k \cdot (\operatorname{trace}(M))^2 \), where \( k \) is the sensitivity parameter to separate corners from edges and is of value usually between 0.04 to 0.06. Apply threshold to R where pixels with R greater than a threshold are determined to be potential corners. Finally, apply non-maxima suppresion to ensure distinct corner points. 
+			</p>
+
+            <div class="text-center mb-3 col-md-6">
+				<img src="../img/harriscorner/harriscorner2.JPG" class = "rounded" width = "95%"  alt="Detected Corners in an image">
+				<p class="subtitles">Detected Corners in an image</p>
+			</div>
+
+            <div class ="codeSection mb-1 col-md-8">
+				<pre><code class="language-python">
+                #gaussian smoothing
+                def gauss_smoothing(image):
+                    gauss_ker = np.array([ [1, 4, 7, 4, 1],[4, 16, 26, 16, 4],[7, 26, 41, 26, 7],[4, 16, 26, 16, 4],[1, 4, 7, 4, 1]])/273
+                
+                    #convolve image with the gaussian kernel and normalize
+                    gauss_smooth_image = convolve2d(image,gauss_ker)
+                    gauss_smooth_image =  (gauss_smooth_image / gauss_smooth_image.max())*255
+                    return gauss_smooth_image 
+
+                def harris_corner_detector(img,k,threshold):
+
+                #find the horizontal and vertical gradient and plot
+                gradient, gradient_angle, gradient_x, gradient_y = gradient_operation(img)
+                
+                #find the second moments and plot
+                Ix2 = gradient_x**2
+                Iy2 = gradient_y**2
+                Ixy = gradient_x*gradient_y
+            
+                #smoothen 
+                Sx2 = gauss_smoothing(Ix2)
+                Sy2 = gauss_smoothing(Iy2)
+                Sxy = gauss_smoothing(Ixy)
+                
+                #obtain response for each pixel
+                detM = (Sx2*Sy2) - Sxy**2
+                traceM = Sx2 + Sxy
+                R = detM -k*(traceM**2)
+                
+                #threshold on value of R
+                harris_corners = np.zeros(R.shape)
+                harris_corners[R > threshold * R.max()] = 1
+                
+                #do non-maxima suppression and return the corners
+                for i in range(1, harris_corners.shape[0] - 1):
+                    for j in range(1, harris_corners.shape[1] - 1):
+                        
+                        if harris_corners[i,j] and ( R[i, j] != np.max(R[i-1:i+2, j-1:j+2]) ):
+                            harris_corners[i,j] = 0
+                        
+                return(harris_corners)
+                
+				</code></pre>
+            </div>
+
+		</div>
+    
+	  </div>
+
+	</section>
+
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/plotly.js@2.24.3/dist/plotly.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.2/lib/browser/math.min.js"></script>
+
+	<script src ="assets/js/prism.js"></script>
+	
+
+
+</body>
+</html>

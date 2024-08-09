@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="../css/customstyle.css">
+	<link rel="stylesheet" href="../css/prism.css">
+    <script src ="../js/prism.js"></script>
+
+	<title>Hough Transform</title>
+
+</head>
+
+
+<body>
+
+	<!-- Main navigation -->
+	<nav class = "navbar navbar-expand-md py-4 navbar-light navs "> 
+		<div class = "container-xl ">
+			<a class="navbar-brand" href="#">
+				<span class="text-white "><i class="bi bi-grid"></i>
+                   Hough Transform
+				</span>
+			  </a>
+
+			  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-list" aria-controls="nav-list" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			  </button>
+
+			  <div class="collapse navbar-collapse justify-content-end align-center" id="nav-list">
+				<ul class="navbar-nav ">
+				  <li class="nav-item">
+					<a class="nav-link text-white" href="../index.html" style="font-size: 1.3rem; font-family: 'Comic Sans MS', 'Comic Sans', cursive;">Back to Personal Site</a>
+				  </li>
+
+				</ul>
+			  </div>
+	 
+		</div>
+
+	</nav>
+
+	<!-- Intro -->
+	
+	<section id="intro">
+	  <div class="container-lg my-5">
+		<div class = " text-center slogan mb-4">
+			Hough Transform: Detecting line segments in images
+		</div>
+
+		<div class=" row justify-content-center align-items-center serif" >
+
+			<p class=" mb-4 ">Hough transform is a feature extraction technique used in computer vision to detect simple shapes such as lines and circles in images. The mian idea is to transform the image space into parameter space where shapes such as lines can be easily detected. Hough transform can have applications in areas such as lane detection in autonomous driving, pattern recognition, and generalized shape detection. The main steps involve edge detection in the images, then mapping each edge point (x,y) to another parameter space such as interms of radius and angle. Then the accumulator array for the new parameters is created where by for each edge point, the parameters are computed and voted in the accumulator array. Finally, the peaks in the accumulator array are found and the shapes corresponding to the peaks in the original image space are found. The main steps in hough transform are written below and the complete code with a detailed explanation is provided in the Jupyter Notebook at &nbsp;
+                <a href="https://github.com/Kirubelsol/Projects/tree/main/HoughTransform" target="_blank">
+                    <i class="bi bi-github" style="font-size: 1.2em; "></i> 
+                </a>          
+			</p>
+
+
+      <div class="text-center mb-3 col-md-6">
+				<img src="../img/houghtransform/hough1.JPG" class = "rounded" width = "70%"  alt="Detected lines using hough transform">
+				<p class="subtitles">Detected line segments using hough transform</p>
+			</div>
+
+      <div>
+        <p class=" mb-1">
+          <span class = "titles"> Canny edge detection: </span> is a simple but efficient process used to find edges in images. The main steps are:
+          <ul>
+            <li >
+              Apply gaussian filter to smoothen and reduce noise in the image. 
+            </li>
+
+            <li >
+              Compute the gradient direction and intensity change of the image at each pixel, in this case using the sobel operator.  
+            </li>
+            
+            <li >
+              Perform non-maxima suppression to find the local maxima in the gradient direction to mark as edges.
+            </li>
+
+            <li >
+              Apply P-tile thresholding which sets the the threshold based on the specified intensity percentile making the edge detection process adapt to the image's intensity distribution. 
+            </li>
+
+          </ul>
+        </p>
+      </div>
+
+      <div class = "row justify-content-center ">
+        <div class="text-center col-md-4">
+            <img src="../img/houghtransform/smoothened.JPG" class = "rounded" width="70%" alt= "Gaussian smoothened">
+        </div>
+
+        <div class="text-center col-md-4">
+            <img src="../img/houghtransform/edge.JPG" class = "rounded" width="70%" alt= "edge image">
+        </div>
+      </div>
+    
+    
+      <div class = "row justify-content-center ">
+        <div class="text-center col-md-4">
+            <img src="../img/houghtransform/suppress.JPG" class = "rounded" width="70%" alt= "non-maxima suppresed">
+        </div>
+
+        <div class="text-center col-md-4">
+            <img src="../img/houghtransform/p-tile.JPG" class = "rounded" width="70%" alt= "p-tile threshold iamge">
+        </div>
+      </div>
+
+      <div>
+        <p class=" mb-3">
+          <span class = "titles"> Finding line segments: </span> After extracting the edges in the image using intensity gradient change, the lines segments in the image from the edges should be detected. The main steps are: 
+          <ul>
+            <li >
+              For each edge point \( (x,y) \) in the image, map it to the new parameter space \( ( \rho, \theta) \)  where \(  \rho \)  is the distance from origin (top left corner) to the line, and \( \theta \) is the angle of line normal using \( \rho = x\cos(\theta) + y\sin(\theta) \). Each line in Cartesian space can be uniquely represented by a single point in this new Hough space.
+            </li>
+
+            <li >
+              An accumulator array is created where \(  \rho \) and \( \theta \) are the two dimensions of the matrix with a specified step size in order to keep track of the number of votes for each for each \( ( \rho, \theta) \) pair. The array is initialized to zero. 
+            </li>
+            
+            <li >
+              Increment the corresponding \( ( \rho, \theta) \) cells in the accumulator array for the detected edge point \( (x,y) \).
+            </li>
+
+            <li >
+             Identify the peaks in the accumulator array which as stated these points in Hough space correspond to lines in the original image space. 
+            </li>
+
+            <li >
+              After extracting the hough lines from the peaks, identify the points in the line that correspond to edge so the line segments can be effectively extracted.
+            </li>
+
+          </ul>
+        </p>
+      </div>
+
+      <div class = "row justify-content-center ">
+        <div class="text-center col-md-4">
+            <img src="../img/houghtransform/original.JPG" class = "rounded" width="90%" alt= "Original Image">
+        </div>
+
+        <div class="text-center col-md-4">
+            <img src="../img/houghtransform/30Pthreshold.JPG" class = "rounded" width="92%" alt= "30% threshold">
+        </div>
+      </div>
+    
+    
+      <div class = "row justify-content-center ">
+        <div class="text-center col-md-4">
+            <img src="../img/houghtransform/extendedhough.JPG" class = "rounded" width="100%" alt= "Extended Hough Lines">
+        </div>
+
+        <div class="text-center col-md-4">
+            <img src="../img/houghtransform/linesegments.JPG" class = "rounded" width="100%" alt= "Line segments">
+        </div>
+      </div>
+    
+		</div>
+    
+	  
+
+	</section>
+
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/plotly.js@2.24.3/dist/plotly.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.2/lib/browser/math.min.js"></script>
+
+	<script src ="assets/js/prism.js"></script>
+	
+
+
+</body>
+</html>

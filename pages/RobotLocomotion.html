@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="../css/customstyle.css">
+	<link rel="stylesheet" href="../css/prism.css">
+	<script src ="../js/prism.js"></script>
+
+	<title>Robotics Manipulation</title>
+
+</head>
+
+<body>
+
+	<!-- Main navigation -->
+	<nav class = "navbar navbar-expand-md py-4 navbar-light navs "> 
+		<div class = "container-xl ">
+			<a class="navbar-brand" href="#">
+				<span class="text-white "><i class="bi bi-robot"></i>
+					Robotics Manipulation
+				</span>
+			  </a>
+
+			  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-list" aria-controls="nav-list" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			  </button>
+
+			  <div class="collapse navbar-collapse justify-content-end align-center" id="nav-list">
+				<ul class="navbar-nav ">
+				  <li class="nav-item">
+					<a class="nav-link text-white" href="../index.html" style="font-size: 1.3rem; font-family: 'Comic Sans MS', 'Comic Sans', cursive;">Back to Personal Site</a>
+				  </li>
+
+				</ul>
+			  </div>
+	 
+		</div>
+
+	</nav>
+
+	<!-- Intro -->
+	
+	<section id="intro">
+	  <div class="container-lg my-5">
+		<div class = " text-center slogan mb-4">
+			Robotics Manipulation and Locomtion: Pick and Place Project
+		</div>
+
+		<div class=" row justify-content-center align-items-center serif">
+			<p class=" my-2 ">This project done for the Robotics Manipulation and Locomotion course at NYU Tandon involves picking up two red blocks and putting them into a green bowl in a simulation using Frank-Emika Panda robot which has 7 revolute joints with a single axis of rotation. The end effector is a two-finger gripper that can stretch to at most 4 cm. As seen in the picture below the bowl location in spatial frame coordinates is  (−0.3,0.55,0.65) and the block positions are  (0.35,0.58,0.65)  and  (0.15,0.67,0.65) respectively.
+			</p>
+
+
+			<div class="row">
+				<div class="text-center mb-3 col-md-6">
+					<img src="../img/RobotLocomotion/Frank-Emika Panda robot.jpg" class = "rounded" width = "80%"  alt="Frank-Emika Panda robot">
+					<p class="subtitles">Fig 1: Frank-Emika Panda robot</p>
+				</div>
+
+				
+				<div class="text-center mb-3 col-md-6">
+					<img src="../img/RobotLocomotion/simulation environment.jpg" class = "rounded" width = "55%"  alt="The simulation environment">
+					<p class="subtitles">Fig 2: The simulation environment</p>
+				</div>
+			</div>
+
+			<p class=" my-2 ">Two methods are used to complete this task: resolved rate control and impedance control, each with its advantages and disadvantages. Both methods make use of gravity compensation in their joint torque implementation. Also in each implementation, similar concepts are used such as forward kinematics and Jacobians. A brief explanation of these terms are as follows:
+
+			</p>
+
+			
+			<p class=" my-3 "> <span class = "titles"> A homogeneous transformation matrix:  </span>is the 4x4 matrix used to represent the pose (position and orientation) of a rigid body relative to a reference frame. It consists of a 3x3 rotation matrix in the top left with the last column consisting of the translation with 1 as the last element.
+			</p>
+
+			<p class = "text-center">
+				\( T_{SB} = \begin{bmatrix} R_{3x3} & P \\ 0_{1x3} & 1 \end{bmatrix}\) <span class = "fst-italic"> where P is the translation matrix  </span>
+			</p>
+			<p class ="mb-3"> With regards to the rotation matrix, for instance, the rotation matrix with respect to x, y, and z axis at angle \( \theta \) are respectively:  
+			</p>
+			<p class = "text-center"> 
+				\( R_x(\theta) = \)\(\begin{bmatrix} 1 & 0 & 0 \\ 0 & \cos(\theta) & -\sin(\theta) \\ 0 & \sin(\theta) & \cos(\theta) \end{bmatrix}\) &nbsp; &nbsp; 
+				\( R_y(\theta) = \)\(\begin{bmatrix} \cos(\theta) & 0 & \sin(\theta) \\ 0 & 1 & 0 \\ -\sin(\theta) & 0 & \cos(\theta) \end{bmatrix}\) &nbsp; &nbsp; 
+				\( R_z(\theta) = \)\(\begin{bmatrix} \cos(\theta) & -\sin(\theta) & 0 \\ \sin(\theta) & \cos(\theta) & 0 \\ 0 & 0 & 1 \end{bmatrix}\) &nbsp; &nbsp; 
+			</p>
+
+			<div class="text-center mb-3 col-md-6">
+				<img src="../img/RobotLocomotion/example.PNG" class = "rounded" width = "100%"  alt="Frank-Emika Panda robot">
+				<p class="subtitles">Fig 3: Two revolute joint example</p>
+			</div>
+
+			<p class=" my-2 "> The figure above includes two revolute joints which rotate across the Y axis (into the screen). Assume that the frames at the joint are the same as the spatial frame. The first link doesn't include any rotation with respect to the origin meaning an identity rotation matrix but has a translation across the x-axis. Joint 2 involves a rotation across Y axis by \( {\theta}_1\) and a translation across x and y axis with respect to the first joint.
+			</p>
+
+			<p class = "text-center">
+				\( T_{S1} = \begin{bmatrix} 1 & 0 & 0 & 0.3 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix} \)  &nbsp; &nbsp; &nbsp; &nbsp;
+				\( T_{12} = \begin{bmatrix} \cos(\theta_1) & 0 & \sin(\theta_1) & 0.4 \sin({\theta}_1) \\ 0 & 1 & 0 & -0.4\cos({\theta}_1)  \\ -\sin(\theta_1) & 0 & \cos(\theta_1) & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix} \) 
+			</p>
+
+			<p class=" my-2 "> <span class = "titles"> Forward Kinematics:  </span> 
+				is a method for finding the pose of the end effector which includes the position and its angle with respect to a frame (usually the spatial frame) given the joint angles or parameters of the robot's individual links and joints. Forward kinematics can be computed by continuous products of the transformation matrices involving the intermediate joints. For instance, in the previous figure with two revolute joints, the pose of the end effector E with respect to the spatial frame can be found by the matrix products: 
+				
+			</p>
+			<p class = "text-center"> \( T_{SE} = T_{S1} \cdot T_{12} \cdot T_{2E}\)</p>	
+
+			<p>
+				Another method to do the forward kinematics is using the exponential formula that involves the 6x1 skrew row vector. In this case it will be:
+			</p>
+			
+			<p class = "text-center">
+				\( T_{SE} = e^{{\theta}_1 [S_1]} \cdot e^{{\theta}_2 [S_2]} \cdot M\)
+			</p>
+			<p>
+				 M is the pose of the end effector with respect to the spatial frame when the angles are 0.  The S describe the six dimensional unit screw axis combining the rotation and translation as the top three and bottom three elements respectively. In the example the joints represent rotation across Y axis:  
+			</p>
+
+			<p class = "text-center">
+				\( M = \begin{bmatrix} 1 & 0 & 0 & 0.9 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix} \) &nbsp; &nbsp; &nbsp; &nbsp; \( S_1 = S_2 = \begin{bmatrix} 0 \\ 0 \\ 1 \\ 0 \\ 0 \\ 0 \end{bmatrix} \)
+			</p>
+
+			
+			<p class=" my-2 "> <span class = "titles"> Jacobians:  </span> 
+				another important , which is used in both methods, associates joint velocities to end effector twists. The twist, also related to screw, is a 6x1 vector defining the instantaneous motion where the first three representing angular velocity while the bottom three are linear velocities.  Using the space jacobian, the twist with respect to the spatial frame can be found from the joint velocities. 
+				
+			</p>
+
+			<p class = "text-center">
+				\( {V_E}^s = J_{space} \cdot \theta \) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; \( J_{space} = \begin{bmatrix} J_1 & J_2 & J_3 & ... & J_n \end{bmatrix} \)
+			</p>
+
+			<p>
+				To compute each jacobian element an <span class = "subtitles"> adjoint </span>  needs to be used. An adjoint is a 6x6 matrix used to transform twists between different frames. For instance a twist with respect to frame A can be transformed with a twist to frame B using \(Ad_{T_{SB}} \). 
+		   </p>
+
+		   <p class = "text-center">
+				\( [Ad] = \begin{bmatrix} R_{3x3} & 0 \\ [p]R_{3x3} & R_{3x3} \end{bmatrix}  \) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+				\( V_S = [Ad_{T_{SB}}] \cdot V_B \) <br> <br>
+				\( J_1 = S_1\) &nbsp; &nbsp; &nbsp; &nbsp; \( J_2 = Ad_{e^{[S_1] {\theta}_1}}(S_2)\) &nbsp; &nbsp; &nbsp; &nbsp; \( J_3 = Ad_{{e^{[S_1] {\theta}_1}} \cdot {e^{[S_2] {\theta}_2}}}(S_3)\) &nbsp; ...
+			</p>
+			<p>
+				As we can see from the equations the adjoint is used from the second joint onwards to find the geometric space jacobian. We can use figure 3 from previous as an example. The jacobian  (linear and angular velocity) of the second joint is affected by the rotation of the first joint. Hence, the adjoint is used to caputre the effect of that joint on the jacobian of the following ones. 
+		   </p>
+
+		   <p class=" my-2 "> <span class = "titles"> Computing trajectories:  </span> 
+				given initial and desired final positions, if you apply a torque to reach from the initial to final position instataneously a large torque will be applied which can damage the robot and motors. Hence, it is ideal to divide the path into steps to generate smooth motion. It is also better to have zero start and end velocities and acceleration for smooth motion planning and minimizing impact. To achieve this we use a \( 5^{th} \) order to describe the path polynomial since there are six constraints: four of them regarding the 0 start and end accelerations and velocities and the remaining two position constraints. The velocity and acceleration equations can be found using derivatives. 
+			</p>
+
+			<p class = "text-center">
+				\( x(t) = a_o + a_1(t - t_{init}) + a_2(t - t_{init})^2 + a_3(t-t_{init})^3 + a_4(t-t_{init})^4 + a_5(t-t_{init})^5 \) <br>
+
+			</p>
+
+			<p> Solving this equation using the velocity and acceleration constraints give us: </p>
+
+			<p class = "text-center mb-5">
+				\( \theta_{(t)} = \theta_{init} + ({10 \over T^3}(t - t_{init})^3 -  {15 \over T^4}(t - t_{init})^4 +  {6 \over T^5}(t - t_{init})^5) \cdot ( \theta_{goal} - \theta_{init}) \) <br> <br>
+
+				\( \dot{\theta}_{(t)} = ({30 \over T^3}(t - t_{init})^2 -  {60 \over T^4}(t - t_{init})^3 +  {30 \over T^5}(t - t_{init})^4) \cdot ( \theta_{goal} - \theta_{init}) \) <br> <br>
+
+				\( \ddot{\theta}_{(t)} = ({60 \over T^3}(t - t_{init})^2 -  {180 \over T^4}(t - t_{init})^3 +  {120 \over T^5}(t - t_{init})^3) \cdot ( \theta_{goal} - \theta_{init}) \) 
+
+			</p>
+
+			<div class = " text-center slogan mb-3">
+				Resolved rate control implementation
+			</div>
+
+			<p>
+				The resolved control rate is a robot control strategy where most of the computation is done in the end effector space. First the pose, using forward kinematics, and the end effector jacobian oriented in spatial frames are found. The measured finger position from the last column of the pose is used in the error correction and also in plots to compare the desired and measured positions. Afterwards, multiple if else statements are created to achieve the desired trajectory. First, the left-most block is picked and dropped to the bowl, then the other block is picked and dropped taking a total time of 34 seconds. For each task, the robot moves up first before going down and picking up the object. For instance, to pick up the first block the robot moves to [0.35,0.58,0.6] and then to [0.35,0.58,0.3] rather than going directly to [0.35,0.58,0.3] to make a smooth transition and avoid collision with other objects. In each loop iteration, the desired end effector position and velocity are calculated using a compute_trajectory function that takes the starting, final, and current time, and the starting and final desired position while using a fifth order polynomial. The corrected desired end effector velocity is then found by using the P (proportionality constant) from PD gain and the difference between the desired and measured end effector position. The P is reduced from 1x7 to 1x3 since we are dealing with end effectors, not joints. After storing these values for later plots the inverse of the Jacobian was found using the jacobian_inv function since the Jacobian is a 6x7 matrix hence technically non-invertible. We use the last three rows of the jacobian, which deals with the linear velocities and  is a 3x7 matrix, to invert it and find the desired joint velocities. With regards to the inverse of the jacobian, the Moore-Penrose inverse \( J^+\) is used. 
+			</p>
+
+			
+			<p class = "text-center">
+				\(  J^+ = J^T{(JJ^T)}^{-1} \) <br>
+
+			</p>
+
+			<p>
+				Then the joint torque is found using the error in the joint velocity (difference between the desired and actual joint velocities) with gravity compensation added. A 1x7 D gain is used here since we deal with joint velocities.  The following figure represents these steps and equations with the steps from computing trajectory to torque generation looped till the final time repeated. 
+			</p>
+
+			<div class="text-center mb-3 col-md-6">
+				<img src="../img/RobotLocomotion/resolvedsteps.PNG" class = "rounded" width = "60%"  alt="Frank-Emika Panda robot">
+				<p class="subtitles">Fig 4: Resolved rate steps</p>
+			</div>
+
+			<div class = " text-center slogan mb-3">
+				Impedance control implementation
+			</div>
+
+			<p> 
+				Impedance control is another control strategy that relates the applied force with the motion. We have briefly seen about twists. Here a similar vector, wrench, is used to describes force and moment. It is a 6x1 column vector where the first three elements describing moment and the last three describing force. We can then use the last three rows of jacobian (the linear component) to find torque by multiplying the transpose of the Jacobian to the force. With regards to the force, we can use two components, one relating the the stiffness and the other to damping. 
+			</p>
+
+			<p class = "text-center">
+				\(  \mathcal{F_s} =  \begin{pmatrix} m_s \\ \mathcal{F_s}  \end{pmatrix}  \) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+				\(  \mathcal{T} = J^T\mathcal{F}  \) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+				\(  \mathcal{T} = {J_{lin}}^T[K(x_{des}(t) - x_{measured}) + D( \dot{x}_{des}(t) - \dot{x}_{measured}) ]  \)
+
+			</p>
+
+			<p>
+				The implementation starts by finding the pose using forward kinematics, the jacobian of the end effector oriented like the spatial frame, and its transpose. Similar to the previous one, multiple if else statements were created to follow the desired trajectory. Both P and D are 1x3 vectors since we are dealing with the end effector in both cases and a matrix having the P and D values as diagonals is used for joint torque calculation. The joint torque is found using gravity compensation, the last three rows of Jacobian transpose (linear portion), and the diagonal matrices of P and D multiplied by their respective difference between desired and measured positions or velocities. At the end of both methods, an if-else statement for manipulating the gripper that matches with the robot trajectory is implemented. The following figure represents these steps and equations with the steps from computing trajectory to torque generation looped till the final time repeated.
+			</p>
+
+			<div class="text-center mb-5 col-md-6">
+				<img src="../img/RobotLocomotion/impedancesteps.PNG" class = "rounded" width = "90%"  alt="Frank-Emika Panda robot">
+				<p class="subtitles">Fig 4: Impedance control steps</p>
+			</div>
+
+			<div class = " text-center slogan mb-3">
+				Code snippet
+			</div>
+
+			
+			<div class ="codeSection mb-4">
+				<pre><code class="language-python">
+					#helper functions
+					#function to compute trajectory
+					def compute_trajectory(initial_pos, final_pos, t_init, t_goal, t):
+					
+						time_step = t - t_init
+						T = t_goal - t_init
+						delta_pos = final_pos- initial_pos
+					
+						#using the 5th order to achieve 0 vel and acc at beginning and end of trajectory
+						desired_position = initial_pos + ((10/T**3)*time_step**3+(-15/T**4)*time_step**4+(6/T**5)*time_step**5)*delta_pos
+						desired_velocity=((30/T**3)*time_step**2+(-60/T**4)*time_step**3+(30/T**5)*time_step**4)*delta_pos
+					
+						# return the desired position and vel 
+						return desired_position, desired_velocity
+					
+					#function to calculate jacobian inverse
+					def jacobian_inv(J):
+						J_T = np.transpose(J)
+						J_inv = J_T @ np.linalg.inv((J @ J_T))
+						return J_inv
+					
+					# create a simulation, a robot object, and reset the state of the robot
+					simulator = Simulator()
+					simulator.reset_state([0.,0,0.0,-np.pi/2.,0.,np.pi/2.,0.0])
+					my_robot = PandaRobot()
+					
+					# duration of the simulation
+					run_time = 34.
+					
+					# simulation time step
+					dt = 0.005
+					num_steps = int(run_time/dt)
+					
+					
+					#select case to run: case 1: resovled rate control case 2 (other values): impedance control
+					case = 1
+					
+					### this is the main control loop
+					for i in range(num_steps):
+						# get the current time and save it
+						time[i] = dt * i
+						
+						# we get the position and velocities of the joints
+						q, dq = simulator.get_state()
+						measured_positions[i,:] = q
+						measured_velocities[i,:] = dq
+						
+						#using resolved rate control
+						if case == 1: 
+							##PD controller
+							# the PD gains
+							P = np.array([100, 100, 100])
+							D = np.array([10,10,10,10,10,10,1])
+							
+							#find pose, jacobian with respect to end effector
+							pose = my_robot.FK(q)
+							J_0 = my_robot.get_jacobian(q, 'O')[3:,:]
+							
+							measured_finger_position[i,:] = pose[0:3,3]
+							measured_finger_vel[i:]= J_0 @ dq
+					
+							#move to the left most red block
+							if time[i] < 3:
+								t_init = 0
+								t_goal = 3
+								initial = measured_finger_position[0]
+								final = np.array([0.35,0.58,0.6])
+								ref_p, ref_dp = compute_trajectory(initial, final, t_init,t_goal,time[i])
+					
+							elif (time[i]>=3 and time[i] < 6):
+								t_init = 3
+								t_goal = 6
+								initial = np.array([0.35,0.58,0.6])
+								final = np.array([0.35,0.58,0.3]) 
+								ref_p, ref_dp = compute_trajectory(initial, final, t_init,t_goal,time[i])     
+					
+							#pick up the first red block and move to top of the bowl
+							elif (time[i]>=6.2 and time[i]<12 ):
+								t_init = 6.2
+								t_goal = 12
+								initial = np.array([0.35,0.58,0.3])
+								final = np.array([-0.1,0.55,0.7])
+								ref_p, ref_dp = compute_trajectory( initial, final, t_init,t_goal,time[i] )
+					
+							#move slightly down to the bowl and drop it , the gripper part found at end
+							elif (time[i]>=12 and time[i]<16):
+								t_init = 12
+								t_goal = 16
+								initial = np.array([-0.1,0.55,0.7])
+								final = np.array([-0.35,0.55,0.4])
+								ref_p, ref_dp = compute_trajectory(initial, final, t_init,t_goal,time[i])
+					
+					
+							#the next two elif to go to the other red block smoothly    
+							elif (time[i]>=16.2 and time[i]<20):
+								t_init = 16.2
+								t_goal = 20
+								initial = np.array([-0.35,0.55,0.4])
+								final = np.array([0.15,0.67,0.55])
+								ref_p, ref_dp = compute_trajectory(initial, final, t_init,t_goal,time[i])
+					
+							elif (time[i]>= 20 and time[i]<24):
+								t_init = 20
+								t_goal = 24
+								initial = np.array([0.15,0.67,0.55])
+								final = np.array([0.15,0.67,0.3])
+								ref_p, ref_dp = compute_trajectory(initial, final, t_init,t_goal,time[i])
+					
+							#last two elif to go to the bowl and drop it
+							elif (time[i]>=24.2 and time[i]<28):
+								t_init = 24.2
+								t_goal = 28
+								initial = np.array([0.15,0.67,0.3])
+								final = np.array([-0.1,0.67,0.7])
+								ref_p, ref_dp = compute_trajectory(initial, final, t_init,t_goal,time[i])
+					
+							elif (time[i]>=28 and time[i]<32):
+								t_init = 28
+								t_goal = 32
+								initial = np.array([-0.1,0.67,0.7])
+								final = np.array([-0.35,0.55,0.4])
+								ref_p, ref_dp = compute_trajectory(initial, final, t_init,t_goal,time[i])
+					
+					
+							#the corrected desired end_effector velocity
+							vel = ref_dp + P * (ref_p - measured_finger_position[i,:])
+					
+							#store desired end effector values for plotting
+							desired_endeffector_pos[i,:] = ref_p
+							desired_endeffector_vel[i,:] = vel
+					
+							#find inverse of the 3x7 jacobian
+							J0_inv = jacobian_inv(J_0)
+							#find desired joint velocities
+							dq_des = J0_inv @ vel
+							d_error = dq_des-dq 
+					
+							#find the joint torques
+							joint_torques = (D * d_error) + my_robot.g(q) 
+							desired_velocities[i,:] = dq_des
+							
+							
+						#another method using impedance control 
+						else: 
+					
+							# the PD gains , the P is used as the K discussed in class for impedance control
+							P = np.array([100,100,100])
+							D = np.array([0.1,0.1,0.1])
+					
+							#find pose, end effector jacobian, and its transpose
+							pose = my_robot.FK(q)
+							J_0 = my_robot.get_jacobian(q, 'O')[3:,:]
+							J_0T = np.transpose(J_0)
+					
+							measured_finger_position[i,:] = pose[0:3,3]
+							measured_finger_vel[i:]= J_0 @ dq
+					
+					
+							#move to the left most red block
+							if time[i] <= 6:
+								t_init = 0
+								t_goal = 6
+								initial = measured_finger_position[0]
+								final = np.array([0.35,0.58,0.3])
+								ref_p, ref_dp = compute_trajectory(initial, final, t_init,t_goal,time[i])
+					
+							#pick up the first red block and move to top of the bowl
+							elif (time[i]>=6.2 and time[i]<12):
+								t_init = 6.2
+								t_goal = 12
+								initial = np.array([0.35,0.58,0.3])
+								final = np.array([-0.1,0.55,0.7])
+								ref_p, ref_dp = compute_trajectory(initial, final, t_init,t_goal,time[i])
+					
+							#move slightly down to the bowl and drop it , the gripper part found at end
+							elif (time[i]>=12 and time[i]<16):
+								t_init = 12
+								t_goal = 16
+								initial = np.array([-0.1,0.55,0.7])
+								final = np.array([-0.35,0.55,0.4])
+								ref_p, ref_dp = compute_trajectory(initial, final, t_init,t_goal,time[i])
+					
+					
+							#the next two elif to go to the other red block smoothly, change the P and D for this task
+							elif (time[i]>=16.2 and time[i]<20):
+								P = np.array([100,10,100])
+								D = np.array([0.1,0.1,0.1])
+								t_init = 16.2
+								t_goal = 20
+								initial = np.array([-0.35,0.55,0.4])
+								final = np.array([0.1,0.67,0.55])
+								ref_p, ref_dp = compute_trajectory(initial, final, t_init,t_goal,time[i])
+					
+							elif (time[i]>= 20 and time[i]<24):
+								P = np.array([100,10,100])
+								D = np.array([0.1,0.1,0.1])
+								t_init = 20
+								t_goal = 24
+								initial = np.array([0.1,0.67,0.55])
+								final = np.array([0.13,0.67,0.15])
+								ref_p, ref_dp = compute_trajectory(initial, final, t_init,t_goal,time[i])
+					
+							#last two elif to go to the bowl and drop it
+							elif (time[i]>=24.2 and time[i]<28):
+								t_init = 24.2
+								t_goal = 28
+								initial = np.array([0.13,0.67,0.15])
+								final = np.array([-0.1,0.67,0.7])
+								ref_p, ref_dp = compute_trajectory(initial, final, t_init,t_goal,time[i])
+					
+							elif (time[i]>=28 and time[i]<32):
+								t_init = 28
+								t_goal = 32
+								initial = np.array([-0.1,0.67,0.7])
+								final = np.array([-0.35,0.55,0.4])
+								ref_p, ref_dp = compute_trajectory(initial, final, t_init,t_goal,time[i])
+					
+					
+							desired_endeffector_pos[i,:] = ref_p
+							desired_endeffector_vel[i,:] = ref_dp
+							#find the joint torque
+							joint_torques = J_0T @ ((np.diag(P) @(ref_p -measured_finger_position[i,:]) +  np.diag(D) @ (ref_dp-measured_finger_vel[i,:]))) + my_robot.g(q) 
+							
+						
+						#gripper control for both methods
+						# we start by closing the gripper and then open it after 5 seconds
+						gripper_position = [0,0]
+						
+						#loop for gripper
+						if  (time[i]>=0 and time[i]<6):
+							gripper_position = [0.04, 0.04]
+							
+						#to pick the first block and carry it to bowl
+						elif (time[i]>=6 and time[i]<16):
+							gripper_position = [0,0]
+						#drop to bowl
+						elif (time[i]>=16 and time[i]<24):
+							gripper_position = [0.04, 0.04]
+							
+						#to pick the second block and carry it to bowl
+						elif (time[i]>=24 and time[i]<30):
+							gripper_position = [0,0]   
+							
+						#drop to bowl
+						elif (time[i]>32):
+							gripper_position = [0.4,0.4]  
+				</code></pre>
+
+			</div>
+			
+
+			<div class = " text-center slogan mb-2">
+				Both implementations results
+			</div>
+			
+			<p class ="titles mb-4"> &nbsp; &nbsp;  Resolved rate control simulation: </p>
+	
+	
+			
+			<div class="video-container justify-content-center align-center mb-4">
+				<video controls>
+					<source src="../img/RobotLocomotion/resolvedrate.mp4" type="video/mp4">
+				</video>
+			</div>
+	
+			<p class ="titles mb-4"> &nbsp; &nbsp;  Impedance control simulation: </p>
+			
+			<div class="video-container justify-content-center align-center mb-4">
+				<video controls>
+					<source src="../img/RobotLocomotion/impedance.mp4" type="video/mp4">
+				</video>
+			</div>
+	
+			<p class ="titles mb-4"> &nbsp; &nbsp;  End effector position and velocity using both methods: </p>
+	
+			<div class="row mb-4">
+				<div class="text-center mb-3 col-md-6">
+					<img src="../img/RobotLocomotion/resolvedplot.PNG" class = "rounded" width = "80%"  alt="Frank-Emika Panda robot">
+					<p class="subtitles">Fig 5:  Desired and measured end effector position and velocity using resolved rate control
+					</p>
+				</div>
+	
+				
+				<div class="text-center mb-3 col-md-6">
+					<img src="../img/RobotLocomotion/impedanceplot.PNG" class = "rounded" width = "87%"  alt="The simulation environment">
+					<p class="subtitles">Fig 6:  Desired and measured end effector position and velocity using impedance control
+					</p>
+				</div>
+			</div>
+	
+			<p class ="titles mb-2"> &nbsp; &nbsp;  Results comparison: </p>
+	
+			<p class =" mb-5"> As seen in the simlations and plots, using both methods the robot was able to complete the task of picking up the red blocks and putting it in the bowl. However, from the plots we can see that the position of the end effectors in resolved control rate method was more smooth and matched better with the desired positions compared to the impedance control method. This is the advantage resolved rate control, where it provides precise motion control since it calculates the joint velocities directly. The method is also better for high accuracy tasks. The disadvantage of resolved rate control is its lack of adaptability to disturbances and environmental change. With regards to impedance control, as seen from the plot, provides less precise motion as it prioritizes adaptability over motion tracking. Even though less precise motion can be a disadvantage, we can achieve adaptabtation to the environment's stiffness, damping, and inertia through impedance control. </p>
+
+		</div>
+
+		
+
+	  </div>
+
+	</section>
+
+
+
+	<!-- Footer -->
+	<nav class = "navbar navbar-expand-md py-4 navbar-light navs text-center "> 
+		<div class = "container-xl">
+			<a class="navbar-brand" href="#">
+				<span class="text-white "><i class="bi bi-cpu-fill"></i>
+				Filters Characterization
+				</span>
+			</a>
+
+			<p class = " justify-content-end text-right text-white subtitles"> &copy; 2023 Kirubel</p>
+
+		</div>
+	</nav>
+
+
+
+	
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/plotly.js@2.24.3/dist/plotly.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.2/lib/browser/math.min.js"></script>
+
+	
+	
+
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="../css/customstyle.css">
+	<link rel="stylesheet" href="../css/prism.css">
+    <script src ="../js/prism.js"></script>
+
+	<title>Photonic Reservoir Computing</title>
+
+</head>
+
+
+<body>
+
+	<!-- Main navigation -->
+	<nav class = "navbar navbar-expand-md py-4 navbar-light navs "> 
+		<div class = "container-xl ">
+			<a class="navbar-brand" href="#">
+				<span class="text-white "><i class="bi bi-lightning"></i>
+          Photonic Reservoir Computing
+				</span>
+			  </a>
+
+			  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-list" aria-controls="nav-list" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			  </button>
+
+			  <div class="collapse navbar-collapse justify-content-end align-center" id="nav-list">
+				<ul class="navbar-nav ">
+				  <li class="nav-item">
+					<a class="nav-link text-white" href="../index.html" style="font-size: 1.3rem; font-family: 'Comic Sans MS', 'Comic Sans', cursive;">Back to Personal Site</a>
+				  </li>
+
+				</ul>
+			  </div>
+	 
+		</div>
+
+	</nav>
+
+	<!-- Intro -->
+	
+	<section id="intro">
+	  <div class="container-lg my-5">
+		<div class = " text-center slogan mb-4">
+			Analyzing Photonic Reservoir Computing with an Emphasis on Delay-Based Implementation
+		</div>
+
+		<div class=" row justify-content-center align-items-center serif" >
+
+			<p class=" mb-4 ">
+
+        This research, which I completed as my Honors Research Program and continued over summer 2024 in Post-Graduation Practical Training Program at NYUAD,  investigates the potential of photonic reservoir computing, particularly delay-based implementations, to address challenges in processing sequential data. The research is motivated by the computational complexities, speed limitations, and power inefficiencies inherent in electrical processing and recurrent neural network architectures. The goal is to thoroughly analyze photonic reservoir computing and its ability to transform input data into higher-dimensional spaces and do further processing from classification to non-linear channel equalization, especially when the input data is already in optical form.
+
+        The main findings indicate that the single-node delay-based architecture in photonic reservoir computing provides a simplified and effective solution. By utilizing time-delayed feedback for reservoir multiplexing, it creates multiple virtual nodes from a single physical node. Critical components, such as the Mach-Zehnder Modulator (MZM), are essential for introducing the non-linear transformations required for effective data encoding. The study also examines various experimental setups, including different input masks and the number of virtual nodes, to enhance performance. It is found that single-node delay based strcture with many level mask and higher number of nodes until certain threshold with different parameter values (such as feedback and input gain) depending on the task at hand can be an effective optoelectronic reservoir computer. Overall, this research provides significant insights into the practical applications of photonic reservoir computing and lays a foundation for future advancements in this field at New York University Abu Dhabi.  The codes being used for numerical simulation can be found at &nbsp;
+        <a href="https://github.com/Kirubelsol/PhotonicReservoirComputing" target="_blank">
+            <i class="bi bi-github" style="font-size: 1.2em; "></i> 
+        </a>
+
+			</p>
+
+      <div class="text-center mb-3 col-md-6">
+				<img src="../img/Photonics/labsetup.jpg" class = "rounded" width = "70%"  alt="Lab setup">
+				<p class="subtitles">Experimental Setup at The Photonics Lab</p>
+			</div>
+
+      <p class=" mb-3">
+        <span class = "titles"> Reservoir Computing </span> Reservoir computing presents a promising alternative to traditional neural networks, particularly recurrent neural networks (RNNs), for sequential data processing. Unlike RNNs, which face challenges like high computational costs, significant training times, and issues with vanishing and exploding gradients, reservoir computing splits the network into a dynamic, fixed reservoir and a simple readout layer. The reservoir processes input data nonlinearly, transforming it into a higher-dimensional space while preserving temporal information, and the readout layer computes output weights efficiently. This approach reduces training time since the reservoir itself requires no training and supports edge computing by processing tasks closer to the end user, thus minimizing computation latency. Moreover, reservoir computing can be physically implemented using photonic systems, which offer advantages such as non-linearity and low power consumption. While there are challenges, such as limited reservoir control and lengthy output training times, these can be addressed with photonic implementations, making reservoir computing a viable and efficient solution for sequential data processing.
+      </p>
+
+      <div class="text-center mb-3 col-md-6">
+				<img src="../img/Photonics/ReservoirComputing.JPG" class = "rounded" width = "90%"  alt="Reservoir Computing">
+				<p class="subtitles">Conventional and Physical Reservoir Computing  (image from <a href="https://doi.org/10.1016/j.neunet.2019.03.005" target="_blank"  style="text-decoration: none; ">here</a>) </p>
+			</div>
+
+      <p class=" mb-3">
+        <span class = "titles"> Photonic Reservoir Computing: </span> Photonic reservoir computing extends the principles of reservoir computing to the optical domain, leveraging optical devices instead of artificial neurons. Utilizing the unique properties of light, photonic devices like the Mach-Zehnder modulator generate high-dimensional output signals for data computation. Key attributes of the reservoir include short-term memory, nonlinear input transformation, and reproducibility. Parameters such as coupling strength and phase shift can be adjusted to optimize performance. The optical reservoir's output is processed by a simple readout layer to achieve the desired results. This approach addresses many traditional reservoir computing challenges by offering faster data processing, lower latency, and energy efficiency. Photonic devices' nonlinear properties enhance pattern recognition and signal processing efficiency. Additionally, the reservoir's parameters can be adjusted for different tasks, and it is immune to electromagnetic interference. However, challenges like complex hardware setups, scalability, and integration with digital components remain. This research paper explores the potential of photonic reservoir computing, detailing system designs, background information, simulations, and experimental results from the past two decades. Early implementations using semiconductor optical amplifiers and passive on-chip reservoirs have shown promising results, though issues like amplified spontaneous emission need to be addressed.
+      </p>
+      
+      <p class=" mb-3">
+        <span class = "titles"> Implementations of Photonic Reservoir Computing: </span> During the review of the implementations, it was discovered that semiconductor optical amplifiers (SOAs) were among the earliest optical devices used in implementing reservoir computing. The power transfer curve of SOAs, resembling the tanh activation function common in neural networks, made them ideal for early photonic reservoir computing. SOAs' ability to be integrated within a chip, such as in a 4x4 amplifier configuration, allowed for significant advancements, including achieving a 4.5% word error rate in isolated speech recognition tasks. This non-linearity was adjusted using carrier lifetime and gain saturation. However, the speed of the non-linearity was limited, and amplified spontaneous emission introduced noise, hindering practical implementation. Later, a microcavity laser-based spatiotemporal reservoir was proposed, demonstrating memory capabilities through a phase-modulated optical signal within a chaotic cavity, though it was not tested against standard benchmarks. Another significant development involved using Field Programmable Gate Arrays (FPGAs) for real-time weight generation, enabling online adaptation of readout weights with algorithms like gradient descent. Despite this, the integration of FPGAs, such as the Xilinx ML605 with a Virtex 6 chip, posed limitations on speed, capped at 80 MHz. Given these challenges, this research opted to avoid FPGA integration initially, considering it for future enhancements.
+      </p>
+
+      <div class="text-center mb-3 col-md-6">
+				<img src="../img/Photonics/implementations.JPG" class = "rounded" width = "100%"  alt="Implementations">
+				<p class="subtitles">A 4 by 4 swirl topology SOA photonic reservoir (image from <a href="https://doi.org/10.1016/j.neunet.2019.03.005" target="_blank"  style="text-decoration: none; ">here</a>) and on the right input light intensity across the cavity (image from <a href="https://www.nature.com/articles/s41598-019-55247-y" target="_blank"  style="text-decoration: none; ">here</a>) </p>
+			</div>
+
+      <p class=" mb-3">
+        <span class = "titles"> Delay-based implementation: </span> After careful consideration of various architectures, we selected delay-based photonic reservoir computing for its simplicity and effectiveness as the first implementation of reservoir computing at NYUAD. Introducing delay-based reservoir computing marked a significant step towards optimizing speed and power consumption while achieving impressive results in hardware reservoir computing. The delayed reservoir utilizes a single physical nonlinear node, making it simpler and more efficient to implement. Additionally, the time-delayed feedback property allows for reservoir multiplexing in time rather than space, creating multiple virtual nodes from a single physical node. This approach records the reservoir’s response over time rather than space, eliminating the need for multiple physical nodes. Delay-based RC also achieves a higher dimensional space and dynamic nonlinearity using an optoelectronic or all-optical reservoir. Several studies on this type of reservoir computing have shown good results in time series prediction, speech recognition, and other sequential data tasks that require memory and nonlinear transformation.
+      </p>
+
+      <div class="text-center mb-3 col-md-6">
+				<img src="../img/Photonics/singlenode.JPG" class = "rounded" width = "70%"  alt="Single node structure">
+				<p class="subtitles">A brief architecture of single node time delay-based structure (image from <a href="https://doi.org/10.1016/j.neunet.2019.03.005" target="_blank"  style="text-decoration: none; ">here</a>) </p>
+			</div>
+
+      <p class=" mb-3">
+        <span class = "titles"> Experimental Setup: </span> For setting up and testing the single-node delay based optoelectronic reservoir component, several electrical and optical components are used. These include arbitrary waveform generator to generate the electrical signal, a mach-zehnder modulator, variable optical amplifier, RF amplifiers, photodiode and more. The components are the purpose of each are described below. 
+      </p>
+
+      <div class="text-center mb-3 col-md-6">
+				<img src="../img/Photonics/experimentalsetup.JPG" class = "rounded" width = "75%"  alt="Setup of the delay-based reservoir computing">
+				<p class="subtitles">Setup of the delay-based reservoir computing </p>
+			</div>
+
+      <p class=" mb-1">
+        <span class = "titles"> Arbitrary Waveform Generator: </span> is a device used to generate electrical signals with customizable shapes and frequencies. The primary purpose of an AWG is to create precise, complex waveforms that can be used for testing, simulating, and analyzing various electronic systems and components. In this case, AWG is used to generate the input signals to the reservoir. The generated signal in our implementation is after preprocessing is done. The preprocessing includes masking the input signal with period T with random values to break the symmetry in the virtual nodes. 
+      </p>
+
+      <p class=" mb-1">
+        <span class = "titles"> Laser: </span> is a device that emits light through a process of optical amplification based on the stimulated emission of electromagnetic radiation. Lasers produce coherent, monochromatic, and highly directional beams of light. In our implementation, a 1550nm laser is used as in other research papers and it is used as an input to the mach-zehnder modulator. 
+      </p>
+
+      <p class=" mb-1">
+        <span class = "titles"> Mach-Zehnder modulator: </span> is an optical device used to control the intensity and phase of an input light signal. It consists of two arms in a waveguide that split the incoming light and with an external field applied, changing the refractive index of the arms, a desired interference between the separated light beam is achieved when combined. In reservoir computing, it is used to encode data into the light wave and through its nonlinear sinusoidal transfer function transforms the data to a high dimensional optical signal. 
+      </p>
+
+      <p class=" mb-1">
+        <span class = "titles"> Optical coupler and RF Combiner: </span> The optical coupler is used to divide the light beam into two: one to the photodiode for training or testing and one to the feedback. The RF combiner is used to combine the delayed signal and the next electrical input signal to be fed again to the mach-zehnder modulator. 
+      </p>
+
+      <p class=" mb-1">
+        <span class = "titles"> Fiber loop: </span> serves as an optical delay line for the reservoir as the past information is an essential part for computing like recurrent neural networks. 
+      </p>
+
+      <p class=" mb-3">
+        <span class = "titles"> Optical and Electrical amplifiers: </span> are used to amplify the power of the optical and electrical signals in the reservoir loop. These are used to adjust the gain of the input and delayed signals which can have different value based on the task at hand. Considering these components the general discretized equation describing the reservoir can be: \( x_i(n) = \sin(\alpha x_{i-1}(n - 1) + B m_i u(n) + \phi) \) where \( i \) represents the virtual node, \( n-1 \) is the delayed signal, \( u(n) \) is the input signal, \( B \) is the input gain, \( \alpha \) is the feedback gain, \( m_i\) is the mask value of the \( i_{th} \) virtual node, and \( \phi \) is the phase controlled by the DC gain applied to the MZM. 
+      </p>
+
+      <p class=" mb-3">
+        The photonic reservoir computer is being tested in the lab and a research paper explaining the details beyond the information presented here will be available soon. 
+      </p>
+
+
+    </div>
+
+   
+	</section>
+
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/plotly.js@2.24.3/dist/plotly.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.2/lib/browser/math.min.js"></script>
+
+	<script src ="assets/js/prism.js"></script>
+	
+
+
+</body>
+</html>
